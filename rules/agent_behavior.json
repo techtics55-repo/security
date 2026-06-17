@@ -1,0 +1,30 @@
+{
+  "agent_signatures": [
+    {"id": "langchain", "pattern": "langchain", "description": "LangChain framework", "category": "framework"},
+    {"id": "langgraph", "pattern": "langgraph", "description": "LangGraph workflow framework", "category": "framework"},
+    {"id": "crewai", "pattern": "crewai", "description": "CrewAI multi-agent framework", "category": "framework"},
+    {"id": "autogen", "pattern": "autogen|pyautogen", "description": "AutoGen multi-agent framework", "category": "framework"},
+    {"id": "openai-assistant", "pattern": "assistants=v1|assistant_id", "description": "OpenAI Assistants API", "category": "api"},
+    {"id": "openai-functions", "pattern": "functions|function_call|tool_choice", "description": "OpenAI function calling", "category": "api"},
+    {"id": "openai-tools", "pattern": "tools.*type.*function", "description": "OpenAI tools API", "category": "api"},
+    {"id": "openai-stream", "pattern": "stream=True|stream=true", "description": "Streaming response", "category": "api"},
+    {"id": "pipeline", "pattern": "pipeline\\s*=\\s*|pipeline_name", "description": "Pipeline automation", "category": "workflow"},
+    {"id": "chain", "pattern": "chain\\s*=\\s*|Chain\\(|SequentialChain|LLMChain", "description": "Chain-based workflow", "category": "workflow"},
+    {"id": "agent-executor", "pattern": "AgentExecutor|create_agent|initialize_agent", "description": "Agent executor pattern", "category": "agent"},
+    {"id": "react-agent", "pattern": "ReAct|react_agent|zero-shot-react", "description": "ReAct agent pattern", "category": "agent"},
+    {"id": "loop-detector", "pattern": "while.*(?:True|true).*:|for.*range\\(.*:\\)", "description": "Loop pattern in agent (potential infinite loop)", "category": "behavior"},
+    {"id": "retry-pattern", "pattern": "retry|max_retries|backoff", "description": "Retry logic in agent", "category": "behavior"}
+  ],
+  "behavioral_heuristics": {
+    "max_requests_per_second": 10,
+    "max_token_per_minute": 100000,
+    "cross_user_thread_detect": true,
+    "session_affinity_check": true
+  },
+  "workflow_indicators": {
+    "rapid_sequential_calls": {"threshold": 3, "window_seconds": 10, "description": "Multiple rapid calls suggesting automation"},
+    "structured_format_ratio": {"threshold": 0.8, "description": "High ratio of structured (JSON) vs natural language prompts"},
+    "tool_call_frequency": {"threshold": 5, "window_seconds": 30, "description": "Frequent tool/function call usage"},
+    "time_between_calls": {"threshold_ms": 200, "description": "Consistently fast response times suggesting automation"}
+  }
+}

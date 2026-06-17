@@ -1,0 +1,22 @@
+{
+  "suspicious_domains": [
+    "data-collector.example.com",
+    "tracking.example.net",
+    "analytics.untrusted.io",
+    "telemetry.malicious.com",
+    "exfil.malware.test"
+  ],
+  "known_malicious_ips": [
+    "185.220.101.0/24",
+    "5.188.62.0/24"
+  ],
+  "high_risk_tlds": [
+    ".tk",
+    ".ml",
+    ".ga",
+    ".cf",
+    ".gq",
+    ".top",
+    ".xyz"
+  ]
+}
