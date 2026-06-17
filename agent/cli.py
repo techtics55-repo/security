@@ -8,7 +8,9 @@ from datetime import datetime
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from agent.config import AgentConfig
-from agent.scanners import InjectionScanner, PIIScanner, CodeChecker, DataFlowTracker, BehaviorAnalyzer
+from agent.scanners import (InjectionScanner, PIIScanner, CodeChecker,
+                              DataFlowTracker, BehaviorAnalyzer,
+                              ResponseSafetyScanner, HallucinationDetector)
 from agent.detectors import AgentDetector, WorkflowTracker
 from agent.store import LocalStore, AuditLogger
 from agent.policies import PolicyEngine
@@ -39,6 +41,8 @@ class AegisCLI:
             CodeChecker(rules_dir),
             DataFlowTracker(rules_dir),
             BehaviorAnalyzer(rules_dir),
+            ResponseSafetyScanner(rules_dir),
+            HallucinationDetector(rules_dir),
         ]
 
         self.agent_detector = AgentDetector(rules_dir)

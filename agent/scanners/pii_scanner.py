@@ -56,9 +56,10 @@ class PIIScanner(BaseScanner):
         findings = self._scan_text(prompt, "prompt")
         passed = len(findings) == 0
         severity = Severity.INFO
+        sev_order = {"info":0,"low":1,"medium":2,"high":3,"critical":4}
         for f in findings:
             f_sev = self.severity_map.get(f["severity"], Severity.INFO)
-            if f_sev.value > severity.value:
+            if sev_order.get(f_sev.value, 0) > sev_order.get(severity.value, 0):
                 severity = f_sev
         return ScannerResult(
             scanner_name=self.name,
@@ -74,9 +75,10 @@ class PIIScanner(BaseScanner):
         findings = self._scan_text(response, "response")
         passed = len(findings) == 0
         severity = Severity.INFO
+        sev_order = {"info":0,"low":1,"medium":2,"high":3,"critical":4}
         for f in findings:
             f_sev = self.severity_map.get(f["severity"], Severity.INFO)
-            if f_sev.value > severity.value:
+            if sev_order.get(f_sev.value, 0) > sev_order.get(severity.value, 0):
                 severity = f_sev
         return ScannerResult(
             scanner_name=self.name,

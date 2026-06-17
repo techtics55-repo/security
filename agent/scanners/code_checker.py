@@ -93,9 +93,10 @@ class CodeChecker(BaseScanner):
             patterns_key = f"{lang_type}_patterns"
             patterns = self.patterns.get(patterns_key, [])
             findings = self._scan_code_block(code, lang_type, patterns)
+            sev_order = {"info":0,"low":1,"medium":2,"high":3,"critical":4}
             for f in findings:
                 f_sev = self.severity_map.get(f["severity"], Severity.INFO)
-                if f_sev.value > highest_severity.value:
+                if sev_order.get(f_sev.value, 0) > sev_order.get(highest_severity.value, 0):
                     highest_severity = f_sev
             all_findings.extend(findings)
 
