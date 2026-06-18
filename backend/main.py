@@ -5,6 +5,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from contextlib import asynccontextmanager
 
 from .config import settings
@@ -21,7 +23,7 @@ app = FastAPI(
     title=settings.app_name,
     version=settings.version,
     lifespan=lifespan,
-    docs_url="/docs" if settings.debug else None,
+    docs_url="/docs",
 )
 
 app.add_middleware(
@@ -32,14 +34,41 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+static_dir = Path(__file__).parent.parent / "static"
+has_static = static_dir.exists()
 
-@app.get("/")
-def root():
-    return {
-        "name": settings.app_name,
-        "version": settings.version,
-        "status": "running",
-    }
+if has_static:
+    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+
+
+    @app.get("/")
+    def serve_index():
+        return FileResponse(str(static_dir / "index.html"))
+
+
+    @app.get("/app")
+    def serve_app():
+        app_file = static_dir / "app.html"
+        if app_file.exists():
+            return FileResponse(str(app_file))
+        return FileResponse(str(static_dir / "index.html"))
+
+
+    @app.get("/billing")
+    def serve_billing():
+        app_file = static_dir / "app.html"
+        if app_file.exists():
+            return FileResponse(str(app_file))
+        return FileResponse(str(static_dir / "index.html"))
+else:
+
+    @app.get("/")
+    def root():
+        return {
+            "name": settings.app_name,
+            "version": settings.version,
+            "status": "running",
+        }
 
 
 @app.get("/health")

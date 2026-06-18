@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html class="dark scroll-smooth" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aegis Console | AI Security Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Libre+Caslon+Text:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "on-surface": "#d4e4fa", "surface": "#051424", "secondary": "#44e2cd",
+        "surface-container-low": "#0d1c2d", "surface-container": "#122131",
+        "surface-container-high": "#1c2b3c", "surface-variant": "#273647",
+        "on-surface-variant": "#c6c6cd", "outline-variant": "#46464c",
+        "on-tertiary-container": "#6467f2", "tertiary-fixed": "#e1e0ff",
+        "surface-container-lowest": "#010f1f", "background": "#051424",
+        "surface-container-highest": "#273647"
+      },
+      fontFamily: { "headline-lg": ["Libre Caslon Text"], "label-caps": ["JetBrains Mono"], "body-md": ["Inter"], "code-sm": ["JetBrains Mono"] },
+      fontSize: {
+        "label-caps": ["12px",{lineHeight:"16px",letterSpacing:"0.1em",fontWeight:"700"}],
+        "body-md": ["16px",{lineHeight:"24px",fontWeight:"400"}],
+        "code-sm": ["14px",{lineHeight:"20px",letterSpacing:"0.05em",fontWeight:"500"}],
+        "headline-lg": ["32px",{lineHeight:"40px",fontWeight:"400"}]
+      },
+      spacing: { "container-max":"1440px", "margin-mobile":"20px", "margin-desktop":"64px", "gutter":"24px" }
+    }
+  }
+}
+</script>
+<style>
+  .cyber-glass { background: rgba(1,15,31,0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(144,144,151,0.15); transition: all 0.4s cubic-bezier(0.23,1,0.32,1); }
+  .cyber-glass:hover { background: rgba(1,15,31,0.8); border-color: rgba(68,226,205,0.25); transform: translateY(-1px); box-shadow: 0 20px 40px -20px rgba(0,0,0,0.6); }
+  .btn-luxe { background: rgba(100,103,242,0.1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(100,103,242,0.5); color: #fff; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; font-weight: 700; transition: all 0.4s cubic-bezier(0.23,1,0.32,1); cursor: pointer; display: inline-block; text-align: center; }
+  .btn-luxe:hover { background: rgba(100,103,242,0.2); border-color: #6467f2; box-shadow: 0 0 40px rgba(100,103,242,0.3); transform: translateY(-1px); }
+  .btn-secondary-luxe { background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border: 1px solid rgba(144,144,151,0.4); color: rgba(255,255,255,0.9); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; font-weight: 700; transition: all 0.4s cubic-bezier(0.23,1,0.32,1); cursor: pointer; display: inline-block; text-align: center; }
+  .btn-secondary-luxe:hover { background: rgba(255,255,255,0.08); border-color: #fff; color: #fff; }
+  .sidebar-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.5); transition: all 0.3s ease; cursor: pointer; }
+  .sidebar-item:hover, .sidebar-item.active { background: rgba(100,103,242,0.1); color: #fff; border-left: 2px solid #6467f2; }
+  .sidebar-item.active { background: rgba(100,103,242,0.15); color: #fff; border-left: 2px solid #6467f2; }
+  .page-section { display: none; }
+  .page-section.active { display: block; }
+  .stat-value { font-size: 28px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #010f1f; }
+  ::-webkit-scrollbar-thumb { background: #273647; border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: #46464c; }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-in { animation: fadeInUp 0.5s ease-out forwards; }
+  code { font-family: 'JetBrains Mono', monospace; background: rgba(255,255,255,0.04); padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden relative min-h-screen">
+<div class="fixed inset-0 bg-[#020617] z-[-1]"></div>
+
+<nav class="bg-surface-container-lowest/40 backdrop-blur-3xl fixed top-0 w-full z-50 border-b border-outline-variant/10 flex justify-between items-center px-6 py-4 md:px-10">
+  <a href="/" class="font-headline-lg text-xl text-white uppercase tracking-tighter font-bold flex items-center gap-3" onclick="event.preventDefault(); navigateTo('dashboard')">
+    <div class="relative">
+      <span class="w-2.5 h-2.5 bg-secondary rounded-sm rotate-45 block"></span>
+      <span class="absolute inset-0 w-2.5 h-2.5 bg-secondary rounded-sm rotate-45 block blur-[6px] opacity-50"></span>
+    </div>
+    AEGIS
+  </a>
+  <div class="flex items-center gap-6">
+    <span class="font-code-sm text-[10px] text-secondary font-bold tracking-[0.3em] uppercase">System Online</span>
+    <a href="/" class="btn-secondary-luxe px-4 py-1.5 rounded text-[10px] tracking-widest">Landing</a>
+  </div>
+</nav>
+
+<div class="flex pt-16 min-h-screen">
+  <!-- Left Sidebar -->
+  <aside class="w-56 shrink-0 border-r border-white/5 bg-surface-container-lowest/30 backdrop-blur-2xl p-4 hidden md:flex flex-col gap-1 fixed left-0 top-16 bottom-0 overflow-y-auto z-40">
+    <div class="font-code-sm text-[9px] text-white/20 uppercase tracking-[0.3em] mb-3 px-2">Navigation</div>
+    <div class="sidebar-item active" data-page="dashboard" onclick="navigateTo('dashboard')"><span class="material-symbols-outlined text-lg">dashboard</span> Dashboard</div>
+    <div class="sidebar-item" data-page="install" onclick="navigateTo('install')"><span class="material-symbols-outlined text-lg">download</span> First Install</div>
+    <div class="sidebar-item" data-page="software" onclick="navigateTo('software')"><span class="material-symbols-outlined text-lg">terminal</span> Get the Software</div>
+    <div class="sidebar-item" data-page="api" onclick="navigateTo('api')"><span class="material-symbols-outlined text-lg">api</span> API</div>
+    <div class="sidebar-item" data-page="billing" onclick="navigateTo('billing')"><span class="material-symbols-outlined text-lg">receipt_long</span> Billings</div>
+    <div class="sidebar-item" data-page="docs" onclick="navigateTo('docs')"><span class="material-symbols-outlined text-lg">description</span> Documentation</div>
+    <div class="sidebar-item" data-page="scanners" onclick="navigateTo('scanners')"><span class="material-symbols-outlined text-lg">security</span> Scanners</div>
+    <div class="sidebar-item" data-page="settings" onclick="navigateTo('settings')"><span class="material-symbols-outlined text-lg">settings</span> Settings</div>
+    <div class="sidebar-item" data-page="help" onclick="navigateTo('help')"><span class="material-symbols-outlined text-lg">help</span> Help</div>
+    <div class="mt-auto pt-4 border-t border-white/5">
+      <div class="sidebar-item" onclick="if(confirm('Sign out of Aegis Console?')){window.location.href='/'}"><span class="material-symbols-outlined text-lg">logout</span> Sign Out</div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 md:ml-56 md:mr-64 p-6 md:p-8" id="main-content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="page-section active" id="page-dashboard">
+      <div class="fade-in">
+        <div class="flex items-center gap-3 mb-1"><span class="h-px w-6 bg-secondary/50"></span><span class="font-label-caps text-secondary text-[9px] uppercase tracking-[0.5em]">Console</span></div>
+        <h1 class="font-headline-lg text-3xl md:text-4xl text-white mb-1 font-bold tracking-tight">Aegis Console</h1>
+        <p class="text-on-surface/60 text-sm mb-8">AI Security &amp; Governance Dashboard</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8 fade-in" id="stats-row">
+        <div class="cyber-glass p-5 rounded-lg text-center"><div class="stat-value text-secondary" id="stat-status">...</div><div class="font-code-sm text-[9px] text-on-surface-variant uppercase tracking-widest mt-1">System</div></div>
+        <div class="cyber-glass p-5 rounded-lg text-center"><div class="stat-value text-tertiary-fixed" id="stat-version">...</div><div class="font-code-sm text-[9px] text-on-surface-variant uppercase tracking-widest mt-1">Version</div></div>
+        <div class="cyber-glass p-5 rounded-lg text-center"><div class="stat-value text-secondary" id="stat-scans">...</div><div class="font-code-sm text-[9px] text-on-surface-variant uppercase tracking-widest mt-1">Scans</div></div>
+        <div class="cyber-glass p-5 rounded-lg text-center"><div class="stat-value text-[#f0a030]" id="stat-issues">...</div><div class="font-code-sm text-[9px] text-on-surface-variant uppercase tracking-widest mt-1">Issues</div></div>
+      </div>
+      <div class="mb-8 fade-in">
+        <div class="flex items-center gap-3 mb-3"><span class="h-px w-6 bg-secondary/50"></span><span class="font-label-caps text-secondary text-[9px] uppercase tracking-[0.5em]">Quick Actions</span></div>
+        <div class="flex flex-wrap gap-2">
+          <a href="/docs" class="btn-luxe px-4 py-2 rounded text-[10px] tracking-[0.3em]">API Docs</a>
+          <a href="/health" target="_blank" class="btn-secondary-luxe px-4 py-2 rounded text-[10px] tracking-[0.3em]">Health</a>
+          <a href="/logs/stats" target="_blank" class="btn-secondary-luxe px-4 py-2 rounded text-[10px] tracking-[0.3em]">Stats</a>
+          <a href="/agents/" target="_blank" class="btn-secondary-luxe px-4 py-2 rounded text-[10px] tracking-[0.3em]">Agents</a>
+          <button onclick="refreshStats()" class="btn-luxe px-4 py-2 rounded text-[10px] tracking-[0.3em]">Refresh</button>
+        </div>
+      </div>
+      <div class="mb-8 fade-in">
+        <div class="flex items-center gap-3 mb-3"><span class="h-px w-6 bg-secondary/50"></span><span class="font-label-caps text-secondary text-[9px] uppercase tracking-[0.5em]">API Endpoints</span></div>
+        <div class="grid grid-cols-1 gap-2" id="api-endpoints">
+          <div class="cyber-glass flex items-center justify-between p-3 rounded-lg"><div><span class="text-[9px] font-bold text-secondary uppercase tracking-wider">GET</span> <span class="font-code-sm text-white text-sm ml-2">/health</span><div class="text-on-surface-variant text-[11px] mt-0.5">System health check</div></div><span class="font-code-sm text-[10px] text-secondary" id="health-badge">Online</span></div>
+          <div class="cyber-glass flex items-center justify-between p-3 rounded-lg"><div><span class="text-[9px] font-bold text-secondary uppercase tracking-wider">POST</span> <span class="font-code-sm text-white text-sm ml-2">/auth/register</span><div class="text-on-surface-variant text-[11px] mt-0.5">Create a new account</div></div><span class="font-code-sm text-[10px] text-secondary">Ready</span></div>
+          <div class="cyber-glass flex items-center justify-between p-3 rounded-lg"><div><span class="text-[9px] font-bold text-secondary uppercase tracking-wider">POST</span> <span class="font-code-sm text-white text-sm ml-2">/auth/login</span><div class="text-on-surface-variant text-[11px] mt-0.5">Authenticate and get token</div></div><span class="font-code-sm text-[10px] text-secondary">Ready</span></div>
+          <div class="cyber-glass flex items-center justify-between p-3 rounded-lg"><div><span class="text-[9px] font-bold text-secondary uppercase tracking-wider">GET</span> <span class="font-code-sm text-white text-sm ml-2">/auth/me</span><div class="text-on-surface-variant text-[11px] mt-0.5">Current user profile</div></div><span class="font-code-sm text-[10px] text-secondary">Ready</span></div>
+          <div class="cyber-glass flex items-center justify-between p-3 rounded-lg"><div><span class="text-[9px] font-bold text-secondary uppercase tracking-wider">POST</span> <span class="font-code-sm text-white text-sm ml-2">/agents/register</span><div class="text-on-surface-variant text-[11px] mt-0.5">Register a new AI agent</div></div><span class="font-code-sm text-[10px] text-secondary">Ready</span></div>
+          <div class="cyber-glass flex items-center justify-between p-3 rounded-lg"><div><span class="text-[9px] font-bold text-secondary uppercase tracking-wider">GET</span> <span class="font-code-sm text-white text-sm ml-2">/agents/</span><div class="text-on-surface-variant text-[11px] mt-0.5">List registered agents</div></div><span class="font-code-sm text-[10px] text-secondary">Ready</span></div>
+          <div class="cyber-glass flex items-center justify-between p-3 rounded-lg"><div><span class="text-[9px] font-bold text-secondary uppercase tracking-wider">POST</span> <span class="font-code-sm text-white text-sm ml-2">/logs/ingest</span><div class="text-on-surface-variant text-[11px] mt-0.5">Ingest a scan log entry</div></div><span class="font-code-sm text-[10px] text-secondary">Ready</span></div>
+          <div class="cyber-glass flex items-center justify-between p-3 rounded-lg"><div><span class="text-[9px] font-bold text-secondary uppercase tracking-wider">GET</span> <span class="font-code-sm text-white text-sm ml-2">/logs/</span><div class="text-on-surface-variant text-[11px] mt-0.5">Query scan logs</div></div><span class="font-code-sm text-[10px] text-secondary">Ready</span></div>
+          <div class="cyber-glass flex items-center justify-between p-3 rounded-lg"><div><span class="text-[9px] font-bold text-secondary uppercase tracking-wider">GET</span> <span class="font-code-sm text-white text-sm ml-2">/logs/stats</span><div class="text-on-surface-variant text-[11px] mt-0.5">Scan statistics</div></div><span class="font-code-sm text-[10px] text-secondary">Ready</span></div>
+        </div>
+      </div>
+      <div class="fade-in">
+        <div class="flex items-center gap-3 mb-3"><span class="h-px w-6 bg-secondary/50"></span><span class="font-label-caps text-secondary text-[9px] uppercase tracking-[0.5em]">Activity Log</span></div>
+        <div class="cyber-glass rounded-lg p-4 font-code-sm text-xs leading-relaxed max-h-48 overflow-y-auto" id="log-area"><div class="text-on-surface-variant">Initializing Aegis Console...</div></div>
+      </div>
+    </div>
+
+    <!-- ===== FIRST INSTALL ===== -->
+    <div class="page-section" id="page-install">
+      <div class="flex items-center gap-3 mb-1"><span class="h-px w-6 bg-secondary/50"></span><span class="font-label-caps text-secondary text-[9px] uppercase tracking-[0.5em]">Setup</span></div>
+      <h1 class="font-headline-lg text-3xl text-white mb-6 font-bold tracking-tight">First Install</h1>
+      <div class="space-y-4">
+        <div class="cyber-glass p-6 rounded-lg">
+          <h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-3">1. Prerequisites</h3>
+          <p class="text-on-surface/60 text-sm mb-3">Ensure you have Python 3.10+ installed on your system.</p>
+          <div class="bg-black/40 rounded p-3 font-code-sm text-xs text-secondary">python --version</div>
+        </div>
+        <div class="cyber-glass p-6 rounded-lg">
+          <h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-3">2. Install Dependencies</h3>
+          <p class="text-on-surface/60 text-sm mb-3">Clone the repository and install required packages.</p>
+          <div class="bg-black/40 rounded p-3 font-code-sm text-xs text-secondary">pip install -r requirements.txt</div>
+        </div>
+        <div class="cyber-glass p-6 rounded-lg">
+          <h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-3">3. Start the Agent</h3>
+          <p class="text-on-surface/60 text-sm mb-3">Launch the Aegis local monitoring agent.</p>
+          <div class="bg-black/40 rounded p-3 font-code-sm text-xs text-secondary">python -m agent.cli start --port 8080</div>
+        </div>
+        <div class="cyber-glass p-6 rounded-lg">
+          <h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-3">4. Configure Your AI App</h3>
+          <p class="text-on-surface/60 text-sm">Set your AI provider's base URL to point at the Aegis proxy and start monitoring all traffic.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== GET THE SOFTWARE ===== -->
+    <div class="page-section" id="page-software">
+      <div class="flex items-center gap-3 mb-1"><span class="h-px w-6 bg-secondary/50"></span><span class="font-label-caps text-secondary text-[9px] uppercase tracking-[0.5em]">Downloads</span></div>
+      <h1 class="font-headline-lg text-3xl text-white mb-6 font-bold tracking-tight">Get the Software</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="cyber-glass p-6 rounded-lg text-center">
+          <span class="material-symbols-outlined text-3xl text-secondary mb-3 block" style="font-variation-settings:'FILL'0,'wght'200;">terminal</span>
+          <h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-2">CLI Agent</h3>
+          <p class="text-on-surface/60 text-xs mb-4">Lightweight command-line monitoring agent for local AI traffic inspection.</p>
+          <a href="/docs" class="btn-luxe px-6 py-2 rounded text-[10px] tracking-[0.3em]">Download CLI</a>
+        </div>
+        <div class="cyber-glass p-6 rounded-lg text-center">
+          <span class="material-symbols-outlined text-3xl text-on-tertiary-container mb-3 block" style="font-variation-settings:'FILL'0,'wght'200;">cloud</span>
+          <h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-2">Cloud Dashboard</h3>
+          <p class="text-on-surface/60 text-xs mb-4">Full-featured SaaS dashboard with real-time monitoring, analytics, and policy management.</p>
+          <a href="/app" class="btn-luxe px-6 py-2 rounded text-[10px] tracking-[0.3em]">Open Dashboard</a>
+        </div>
+        <div class="cyber-glass p-6 rounded-lg text-center">
+          <span class="material-symbols-outlined text-3xl text-secondary mb-3 block" style="font-variation-settings:'FILL'0,'wght'200;">docker</span>
+          <h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-2">Docker Image</h3>
+          <p class="text-on-surface/60 text-xs mb-4">Containerized deployment for seamless integration into your existing infrastructure.</p>
+          <a href="/docs" class="btn-luxe px-6 py-2 rounded text-[10px] tracking-[0.3em]">Pull from Registry</a>
+        </div>
+        <div class="cyber-glass p-6 rounded-lg text-center">
+          <span class="material-symbols-outlined text-3xl text-on-tertiary-container mb-3 block" style="font-variation-settings:'FILL'0,'wght'200;">code</span>
+          <h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-2">Source Code</h3>
+          <p class="text-on-surface/60 text-xs mb-4">Access the complete Aegis source on GitHub for custom builds and contributions.</p>
+          <a href="https://github.com/techtics55-repo/security.git" target="_blank" class="btn-luxe px-6 py-2 rounded text-[10px] tracking-[0.3em]">View on GitHub</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== API ===== -->
+    <div class="page-section" id="page-api">
+      <div class="flex items-center gap-3 mb-1"><span class="h-px w-6 bg-secondary/50"></span><span class="font-label-caps text-secondary text-[9px] uppercase tracking-[0.5em]">Integration</span></div>
+      <h1 class="font-headline-lg text-3xl text-white mb-6 font-bold tracking-tight">API Reference</h1>
+      <div class="cyber-glass p-6 rounded-lg mb-4">
+        <p class="text-on-surface/60 text-sm mb-4">Aegis exposes a RESTful API for programmatic access to all security features. All authenticated endpoints require a JWT bearer token or API key.</p>
+        <a href="/docs" class="btn-luxe px-6 py-2 rounded text-[10px] tracking-[0.3em]">Open API Docs</a>
+      </div>
+      <div class="space-y-3">
+        <div class="cyber-glass p-4 rounded-lg flex items-center justify-between"><div><span class="text-[9px] font-bold text-secondary uppercase">POST</span> <span class="font-code-sm text-white ml-2">/auth/register</span><div class="text-on-surface-variant text-[11px]">Create account</div></div><a href="/docs" class="btn-secondary-luxe px-3 py-1 rounded text-[9px]">Try</a></div>
+        <div class="cyber-glass p-4 rounded-lg flex items-center justify-between"><div><span class="text-[9px] font-bold text-secondary uppercase">POST</span> <span class="font-code-sm text-white ml-2">/auth/login</span><div class="text-on-surface-variant text-[11px]">Authenticate</div></div><a href="/docs" class="btn-secondary-luxe px-3 py-1 rounded text-[9px]">Try</a></div>
+        <div class="cyber-glass p-4 rounded-lg flex items-center justify-between"><div><span class="text-[9px] font-bold text-secondary uppercase">POST</span> <span class="font-code-sm text-white ml-2">/agents/register</span><div class="text-on-surface-variant text-[11px]">Register agent</div></div><a href="/docs" class="btn-secondary-luxe px-3 py-1 rounded text-[9px]">Try</a></div>
+        <div class="cyber-glass p-4 rounded-lg flex items-center justify-between"><div><span class="text-[9px] font-bold text-secondary uppercase">POST</span> <span class="font-code-sm text-white ml-2">/logs/ingest</span><div class="text-on-surface-variant text-[11px]">Ingest scan log</div></div><a href="/docs" class="btn-secondary-luxe px-3 py-1 rounded text-[9px]">Try</a></div>
+      </div>
+    </div>
+
+    <!-- ===== BILLING ===== -->
+    <div class="page-section" id="page-billing">
+      <div class="flex items-center gap-3 mb-1"><span class="h-px w-6 bg-secondary/50"></span><span class="font-label-caps text-secondary text-[9px] uppercase tracking-[0.5em]">Subscription</span></div>
+      <h1 class="font-headline-lg text-3xl text-white mb-6 font-bold tracking-tight">Billings &amp; Plans</h1>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="cyber-glass p-6 rounded-lg text-center border border-secondary/20">
+          <h3 class="font-code-sm text-secondary text-sm uppercase tracking-widest font-bold mb-2">Free</h3>
+          <div class="stat-value text-white mb-1">$0</div>
+          <p class="text-on-surface/60 text-xs mb-1">25 requests / day</p>
+          <p class="text-on-surface/60 text-xs mb-4">Basic threat detection</p>
+          <a href="/docs" class="btn-secondary-luxe w-full py-2 rounded text-[10px] tracking-[0.3em] block">Get Started</a>
+        </div>
+        <div class="cyber-glass p-6 rounded-lg text-center border border-secondary/40 relative">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-secondary text-black text-[8px] font-bold px-3 py-0.5 rounded-full uppercase tracking-widest">Popular</div>
+          <h3 class="font-code-sm text-secondary text-sm uppercase tracking-widest font-bold mb-2">Medium</h3>
+          <div class="stat-value text-white mb-1">$12</div>
+          <p class="text-on-surface/60 text-xs mb-1">500 requests / day</p>
+          <p class="text-on-surface/60 text-xs mb-4">Advanced protection suite</p>
+          <a href="#" onclick="alert('Upgrade to Medium plan - coming soon!'); return false;" class="btn-luxe w-full py-2 rounded text-[10px] tracking-[0.3em] block">Subscribe</a>
+        </div>
+        <div class="cyber-glass p-6 rounded-lg text-center border border-secondary/20">
+          <h3 class="font-code-sm text-secondary text-sm uppercase tracking-widest font-bold mb-2">Ultimate</h3>
+          <div class="stat-value text-white mb-1">$39</div>
+          <p class="text-on-surface/60 text-xs mb-1">10,000 requests / day</p>
+          <p class="text-on-surface/60 text-xs mb-4">Full enterprise governance</p>
+          <a href="#" onclick="alert('Upgrade to Ultimate plan - coming soon!'); return false;" class="btn-luxe w-full py-2 rounded text-[10px] tracking-[0.3em] block">Subscribe</a>
+        </div>
+      </div>
+      <div class="cyber-glass p-6 rounded-lg">
+        <h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-3">Current Usage</h3>
+        <p class="text-on-surface/60 text-sm">You are currently on the <strong class="text-white">Free</strong> plan. Upgrade to unlock higher request limits and premium features.</p>
+      </div>
+    </div>
+
+    <!-- ===== DOCUMENTATION ===== -->
+    <div class="page-section" id="page-docs">
+      <div class="flex items-center gap-3 mb-1"><span class="h-px w-6 bg-secondary/50"></span><span class="font-label-caps text-secondary text-[9px] uppercase tracking-[0.5em]">Guides</span></div>
+      <h1 class="font-headline-lg text-3xl text-white mb-6 font-bold tracking-tight">Documentation</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href="/docs" class="cyber-glass p-6 rounded-lg block hover:border-secondary/30">
+          <span class="material-symbols-outlined text-2xl text-secondary mb-2 block">api</span>
+          <h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-1">API Reference</h3>
+          <p class="text-on-surface/60 text-xs">Complete API documentation with interactive Swagger UI.</p>
+        </a>
+        <a href="/docs" class="cyber-glass p-6 rounded-lg block hover:border-secondary/30">
+          <span class="material-symbols-outlined text-2xl text-on-tertiary-container mb-2 block">terminal</span>
+          <h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-1">CLI Guide</h3>
+          <p class="text-on-surface/60 text-xs">Command-line agent setup, configuration, and usage instructions.</p>
+        </a>
+        <a href="/docs" class="cyber-glass p-6 rounded-lg block hover:border-secondary/30">
+          <span class="material-symbols-outlined text-2xl text-secondary mb-2 block">policy</span>
+          <h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-1">Policy Engine</h3>
+          <p class="text-on-surface/60 text-xs">How to define and enforce custom security policies per agent.</p>
+        </a>
+        <a href="/docs" class="cyber-glass p-6 rounded-lg block hover:border-secondary/30">
+          <span class="material-symbols-outlined text-2xl text-on-tertiary-container mb-2 block">receipt_long</span>
+          <h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-1">Audit Logs</h3>
+          <p class="text-on-surface/60 text-xs">Understanding the immutable audit trail and compliance features.</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- ===== SCANNERS ===== -->
+    <div class="page-section" id="page-scanners">
+      <div class="flex items-center gap-3 mb-1"><span class="h-px w-6 bg-secondary/50"></span><span class="font-label-caps text-secondary text-[9px] uppercase tracking-[0.5em]">Detection</span></div>
+      <h1 class="font-headline-lg text-3xl text-white mb-6 font-bold tracking-tight">Scanners</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="cyber-glass p-5 rounded-lg"><div class="flex items-center gap-3 mb-2"><span class="material-symbols-outlined text-secondary">warning</span><h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold">Prompt Injection</h3></div><p class="text-on-surface/60 text-xs">Detects jailbreak attempts, DAN attacks, hidden instructions, and encoding-based evasion.</p></div>
+        <div class="cyber-glass p-5 rounded-lg"><div class="flex items-center gap-3 mb-2"><span class="material-symbols-outlined text-on-tertiary-container">lock</span><h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold">PII &amp; Secrets</h3></div><p class="text-on-surface/60 text-xs">Scans for emails, phones, SSNs, API keys, passwords, and credit card numbers.</p></div>
+        <div class="cyber-glass p-5 rounded-lg"><div class="flex items-center gap-3 mb-2"><span class="material-symbols-outlined text-secondary">terminal</span><h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold">Malicious Code</h3></div><p class="text-on-surface/60 text-xs">Flags dangerous code in AI outputs: file operations, network calls, exec/eval, crypto miners.</p></div>
+        <div class="cyber-glass p-5 rounded-lg"><div class="flex items-center gap-3 mb-2"><span class="material-symbols-outlined text-on-tertiary-container">alt_route</span><h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold">Data Flow</h3></div><p class="text-on-surface/60 text-xs">Maps where user data is sent: endpoints, headers, payload inspection.</p></div>
+        <div class="cyber-glass p-5 rounded-lg"><div class="flex items-center gap-3 mb-2"><span class="material-symbols-outlined text-secondary">radar</span><h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold">Rogue Agents</h3></div><p class="text-on-surface/60 text-xs">Identifies autonomous AI agents, automation pipelines, and multi-step action sequences.</p></div>
+        <div class="cyber-glass p-5 rounded-lg"><div class="flex items-center gap-3 mb-2"><span class="material-symbols-outlined text-on-tertiary-container">gavel</span><h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold">Policy Enforcement</h3></div><p class="text-on-surface/60 text-xs">Define rules per agent. Actions outside scope are blocked and alerted.</p></div>
+      </div>
+    </div>
+
+    <!-- ===== SETTINGS ===== -->
+    <div class="page-section" id="page-settings">
+      <div class="flex items-center gap-3 mb-1"><span class="h-px w-6 bg-secondary/50"></span><span class="font-label-caps text-secondary text-[9px] uppercase tracking-[0.5em]">Configuration</span></div>
+      <h1 class="font-headline-lg text-3xl text-white mb-6 font-bold tracking-tight">Settings</h1>
+      <div class="space-y-4">
+        <div class="cyber-glass p-5 rounded-lg flex items-center justify-between"><div><h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-1">Notifications</h3><p class="text-on-surface/60 text-xs">Configure alert channels for detected threats</p></div><button class="btn-secondary-luxe px-4 py-1.5 rounded text-[9px]" onclick="alert('Notification settings coming soon.')">Configure</button></div>
+        <div class="cyber-glass p-5 rounded-lg flex items-center justify-between"><div><h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-1">API Keys</h3><p class="text-on-surface/60 text-xs">Manage your API keys for programmatic access</p></div><button class="btn-luxe px-4 py-1.5 rounded text-[9px]" onclick="alert('API key management coming soon.')">Manage</button></div>
+        <div class="cyber-glass p-5 rounded-lg flex items-center justify-between"><div><h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-1">Team</h3><p class="text-on-surface/60 text-xs">Invite team members and manage permissions</p></div><button class="btn-secondary-luxe px-4 py-1.5 rounded text-[9px]" onclick="alert('Team management coming soon.')">Manage</button></div>
+        <div class="cyber-glass p-5 rounded-lg flex items-center justify-between"><div><h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-1">Profile</h3><p class="text-on-surface/60 text-xs">Update your account details and preferences</p></div><button class="btn-secondary-luxe px-4 py-1.5 rounded text-[9px]" onclick="alert('Profile settings coming soon.')">Edit</button></div>
+      </div>
+    </div>
+
+    <!-- ===== HELP ===== -->
+    <div class="page-section" id="page-help">
+      <div class="flex items-center gap-3 mb-1"><span class="h-px w-6 bg-secondary/50"></span><span class="font-label-caps text-secondary text-[9px] uppercase tracking-[0.5em]">Support</span></div>
+      <h1 class="font-headline-lg text-3xl text-white mb-6 font-bold tracking-tight">Help &amp; Support</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="cyber-glass p-6 rounded-lg text-center"><span class="material-symbols-outlined text-3xl text-secondary mb-2 block">forum</span><h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-1">Community Forum</h3><p class="text-on-surface/60 text-xs mb-3">Ask questions and share knowledge</p><a href="/docs" class="btn-secondary-luxe px-5 py-1.5 rounded text-[9px]">Visit Forum</a></div>
+        <div class="cyber-glass p-6 rounded-lg text-center"><span class="material-symbols-outlined text-3xl text-on-tertiary-container mb-2 block">mail</span><h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-1">Contact Support</h3><p class="text-on-surface/60 text-xs mb-3">Get help from our engineering team</p><a href="mailto:support@aegis.security" class="btn-luxe px-5 py-1.5 rounded text-[9px]">Email Us</a></div>
+        <div class="cyber-glass p-6 rounded-lg text-center"><span class="material-symbols-outlined text-3xl text-secondary mb-2 block">book</span><h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-1">Documentation</h3><p class="text-on-surface/60 text-xs mb-3">Browse detailed guides and references</p><a href="/docs" class="btn-secondary-luxe px-5 py-1.5 rounded text-[9px]">Read Docs</a></div>
+        <div class="cyber-glass p-6 rounded-lg text-center"><span class="material-symbols-outlined text-3xl text-on-tertiary-container mb-2 block">bug_report</span><h3 class="font-code-sm text-white text-sm uppercase tracking-widest font-bold mb-1">Report Issue</h3><p class="text-on-surface/60 text-xs mb-3">Found a bug? Let us know</p><button class="btn-luxe px-5 py-1.5 rounded text-[9px]" onclick="alert('Thank you! Please report issues on our GitHub repository.'); window.open('https://github.com/techtics55-repo/security/issues', '_blank');">Report</button></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Right Sidebar -->
+  <aside class="w-64 shrink-0 border-l border-white/5 bg-surface-container-lowest/30 backdrop-blur-2xl p-5 hidden md:flex flex-col gap-4 fixed right-0 top-16 bottom-0 overflow-y-auto z-40">
+    <div class="font-code-sm text-[9px] text-white/20 uppercase tracking-[0.3em] mb-1">Access</div>
+    <div class="cyber-glass p-4 rounded-lg text-center">
+      <span class="material-symbols-outlined text-2xl text-secondary mb-2 block">vpn_key</span>
+      <h4 class="font-code-sm text-sm text-white uppercase tracking-wider font-bold mb-1">Get Access</h4>
+      <p class="text-on-surface/50 text-[11px] mb-3">Unlock full Aegis capabilities</p>
+      <button onclick="navigateTo('api')" class="btn-luxe w-full block py-2 rounded text-[10px] tracking-[0.3em]">Get Access</button>
+    </div>
+
+    <div class="font-code-sm text-[9px] text-white/20 uppercase tracking-[0.3em] mt-2 mb-1">Plans</div>
+    <div class="cyber-glass p-4 rounded-lg">
+      <span class="material-symbols-outlined text-xl text-on-tertiary-container mb-2 block">workspace_premium</span>
+      <h4 class="font-code-sm text-sm text-white uppercase tracking-wider font-bold mb-1">Premium Offers</h4>
+      <div class="space-y-2 text-[11px] text-on-surface/60 mb-3">
+        <div class="flex justify-between"><span>Free</span><span class="text-white font-bold">25/day</span></div>
+        <div class="flex justify-between"><span>Medium</span><span class="text-white font-bold">$12/mo</span></div>
+        <div class="flex justify-between"><span>Ultimate</span><span class="text-white font-bold">$39/mo</span></div>
+      </div>
+      <button onclick="navigateTo('billing')" class="btn-secondary-luxe w-full block py-2 rounded text-[10px] tracking-[0.3em] text-center">View Plans</button>
+    </div>
+
+    <div class="font-code-sm text-[9px] text-white/20 uppercase tracking-[0.3em] mt-2 mb-1">Billing</div>
+    <div class="cyber-glass p-4 rounded-lg">
+      <span class="material-symbols-outlined text-xl text-secondary mb-2 block">credit_card</span>
+      <h4 class="font-code-sm text-sm text-white uppercase tracking-wider font-bold mb-1">Billings</h4>
+      <p class="text-on-surface/50 text-[11px] mb-3">Manage subscriptions and invoices</p>
+      <button onclick="navigateTo('billing')" class="btn-luxe w-full block py-2 rounded text-[10px] tracking-[0.3em] text-center">Billing Portal</button>
+    </div>
+
+    <div class="mt-auto pt-4 border-t border-white/5">
+      <div class="flex items-center gap-2 text-on-surface/40 text-[10px] font-code-sm">
+        <span class="w-1.5 h-1.5 bg-secondary rounded-full animate-pulse"></span>
+        All systems nominal
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer class="md:ml-56 md:mr-64 border-t border-white/5 bg-surface-container-lowest/40 py-4 px-6 text-center">
+  <p class="font-code-sm text-[9px] text-on-surface/30 tracking-widest">&copy; 2026 Aegis &mdash; AI Security &amp; Governance Layer</p>
+</footer>
+
+<script>
+function navigateTo(page) {
+  // Update sidebar
+  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+  const item = document.querySelector(`.sidebar-item[data-page="${page}"]`);
+  if (item) item.classList.add('active');
+
+  // Update content
+  document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+  const section = document.getElementById(`page-${page}`);
+  if (section) section.classList.add('active');
+}
+
+function log(msg) {
+  const el = document.getElementById('log-area');
+  if (!el) return;
+  const t = new Date().toLocaleTimeString();
+  el.innerHTML += `<div class="text-on-surface-variant">[${t}] ${msg}</div>`;
+  el.scrollTop = el.scrollHeight;
+}
+
+async function refreshStats() {
+  log('Fetching system status...');
+  try {
+    const r = await fetch('/health'); const h = await r.json();
+    document.getElementById('stat-status').textContent = h.status === 'healthy' ? 'Healthy' : 'Degraded';
+    document.getElementById('health-badge').textContent = 'Online';
+    log('Health: ' + h.status);
+  } catch(e) {
+    document.getElementById('stat-status').textContent = 'Offline';
+    document.getElementById('health-badge').textContent = 'Offline';
+    log('Error: API unreachable'); return;
+  }
+  document.getElementById('stat-version').textContent = '1.0.0';
+  try {
+    const r = await fetch('/logs/stats'); if(r.ok) { const s = await r.json();
+      document.getElementById('stat-scans').textContent = s.total_scans || 0;
+      document.getElementById('stat-issues').textContent = s.total_issues || 0;
+      log('Stats: ' + (s.total_scans||0) + ' scans, ' + (s.total_issues||0) + ' issues');
+    }
+  } catch(e) { document.getElementById('stat-scans').textContent = 'N/A'; document.getElementById('stat-issues').textContent = 'N/A'; }
+  log('Refresh complete.');
+}
+
+document.addEventListener('DOMContentLoaded', () => { log('Aegis Console initialized.'); refreshStats(); });
+</script>
+</body>
+</html>

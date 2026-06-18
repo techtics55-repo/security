@@ -46,7 +46,7 @@ class Agent(Base):
     agent_id = Column(String, unique=True, index=True)
     name = Column(String)
     registered_at = Column(DateTime(timezone=True), server_default=func.now())
-    metadata = Column(JSON)
+    metadata_json = Column("metadata", JSON)
     policies = Column(JSON)
     is_active = Column(Boolean, default=True)
 

@@ -35,7 +35,7 @@ def register_agent(
         models.Agent.user_id == current_user["user_id"],
     ).first()
     if existing:
-        existing.metadata = req.metadata
+        existing.metadata_json = req.metadata
         existing.policies = {**req.policies, "allowed_actions": req.allowed_actions}
         db.commit()
         return {"status": "updated", "agent_id": req.agent_id}
@@ -44,7 +44,7 @@ def register_agent(
         user_id=current_user["user_id"],
         agent_id=req.agent_id,
         name=req.name or req.agent_id,
-        metadata=req.metadata,
+        metadata_json=req.metadata,
         policies={**req.policies, "allowed_actions": req.allowed_actions},
     )
     db.add(agent)
