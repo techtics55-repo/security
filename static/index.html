@@ -4,482 +4,359 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Aegis | AI Security & Governance</title>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Libre+Caslon+Text:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "inverse-surface": "#d4e4fa",
-                    "on-error-container": "#ffdad6",
-                    "on-primary-fixed-variant": "#40465a",
-                    "tertiary-fixed-dim": "#c0c1ff",
-                    "surface-container-highest": "#273647",
-                    "on-tertiary": "#1000a9",
-                    "surface-dim": "#051424",
-                    "on-tertiary-fixed": "#07006c",
-                    "tertiary": "#c0c1ff",
-                    "primary-container": "#020617",
-                    "on-tertiary-fixed-variant": "#2f2ebe",
-                    "on-primary-container": "#72778d",
-                    "primary-fixed-dim": "#c0c6de",
-                    "on-background": "#d4e4fa",
-                    "inverse-primary": "#585e73",
-                    "error": "#ffb4ab",
-                    "surface-container-high": "#1c2b3c",
-                    "secondary-fixed-dim": "#3cddc7",
-                    "on-surface": "#d4e4fa",
-                    "on-secondary-fixed": "#00201c",
-                    "tertiary-container": "#01002e",
-                    "surface-tint": "#c0c6de",
-                    "outline": "#909097",
-                    "surface-bright": "#2c3a4c",
-                    "error-container": "#93000a",
-                    "secondary-fixed": "#62fae3",
-                    "surface-container": "#122131",
-                    "surface-variant": "#273647",
-                    "background": "#051424",
-                    "surface-container-low": "#0d1c2d",
-                    "primary": "#c0c6de",
-                    "on-secondary-fixed-variant": "#005047",
-                    "tertiary-fixed": "#e1e0ff",
-                    "outline-variant": "#46464c",
-                    "on-surface-variant": "#c6c6cd",
-                    "on-tertiary-container": "#6467f2",
-                    "surface": "#051424",
-                    "inverse-on-surface": "#233143",
-                    "on-secondary-container": "#004d44",
-                    "on-error": "#690005",
-                    "on-primary": "#2a3043",
-                    "secondary": "#44e2cd",
-                    "on-primary-fixed": "#151b2d",
-                    "secondary-container": "#03c6b2",
-                    "on-secondary": "#003731",
-                    "surface-container-lowest": "#010f1f",
-                    "primary-fixed": "#dce1fb"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.125rem",
-                    "lg": "0.25rem",
-                    "xl": "0.5rem",
-                    "full": "0.75rem"
-            },
-            "spacing": {
-                    "container-max": "1440px",
-                    "unit": "4px",
-                    "margin-mobile": "20px",
-                    "margin-desktop": "64px",
-                    "gutter": "24px"
-            },
-            "fontFamily": {
-                    "label-caps": ["JetBrains Mono"],
-                    "headline-lg-mobile": ["Libre Caslon Text"],
-                    "body-md": ["Inter"],
-                    "headline-xl": ["Libre Caslon Text"],
-                    "code-sm": ["JetBrains Mono"],
-                    "headline-lg": ["Libre Caslon Text"]
-            },
-            "fontSize": {
-                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
-                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
-                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "400"}],
-                    "code-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
-                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}]
-            }
-          },
-        },
-      }
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        surface: "#051424",
+        foreground: "#e8f4f8",
+        primary: "#44e2cd",
+        secondary: "#6467f2",
+        muted: "#7a9ab0",
+      },
+      fontFamily: {
+        display: ["Rajdhani", "sans-serif"],
+        body: ["DM Sans", "sans-serif"],
+        mono: ["JetBrains Mono", "monospace"],
+      },
+      borderRadius: {
+        DEFAULT: "0.875rem",
+        sm: "calc(0.875rem - 4px)",
+        md: "calc(0.875rem - 2px)",
+        lg: "0.875rem",
+        xl: "calc(0.875rem + 4px)",
+        "2xl": "calc(0.875rem + 8px)",
+        full: "9999px",
+      },
+    },
+  },
+}
 </script>
 <style>
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
-        .cyber-glass {
-            background: rgba(1, 15, 31, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(144, 144, 151, 0.15);
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        .cyber-glass:hover {
-            background: rgba(1, 15, 31, 0.8);
-            border-color: rgba(68, 226, 205, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6), 0 0 40px rgba(68, 226, 205, 0.05);
-        }
-        .btn-luxe {
-            position: relative;
-            background: rgba(100, 103, 242, 0.1);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(100, 103, 242, 0.5);
-            color: #ffffff;
-            font-family: 'JetBrains Mono', monospace;
-            text-transform: uppercase;
-            font-weight: 700;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        .btn-luxe:hover {
-            background: rgba(100, 103, 242, 0.2);
-            border-color: #6467f2;
-            box-shadow: 0 0 40px rgba(100, 103, 242, 0.3);
-            transform: translateY(-1px);
-        }
-        .btn-secondary-luxe {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(144, 144, 151, 0.4);
-            color: rgba(255, 255, 255, 0.9);
-            font-family: 'JetBrains Mono', monospace;
-            text-transform: uppercase;
-            font-weight: 700;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        .btn-secondary-luxe:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: #ffffff;
-            color: #ffffff;
-        }
-        .neon-line { height: 1px; background: linear-gradient(90deg, transparent, rgba(68, 226, 205, 0.6), transparent); }
-        .scan-line {
-            position: absolute; top: 0; left: 0; width: 100%; height: 1px;
-            background: linear-gradient(to right, transparent, rgba(68, 226, 205, 0.5), transparent);
-            opacity: 0.4; animation: scan 6s linear infinite;
-        }
-        @keyframes scan { 0% { transform: translateY(-100%); } 100% { transform: translateY(1000%); } }
-        .text-glow { text-shadow: 0 0 20px rgba(255, 255, 255, 0.15); }
-        .shader-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: #020617; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #010f1f; }
-        ::-webkit-scrollbar-thumb { background: #273647; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #46464c; }
-        @keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
-    </style>
-</head>
-<body class="bg-background text-on-surface font-body-md overflow-x-hidden relative min-h-screen">
-<div class="shader-bg">
-<div class="w-full h-full opacity-50" style="display:block;">
-<canvas id="shader-canvas" style="display:block;width:100%;height:100%"></canvas>
-<script>
-(function() {
-  const canvas = document.getElementById('shader-canvas');
-  function syncSize() { const w=canvas.clientWidth||1280, h=canvas.clientHeight||720; if(canvas.width!==w||canvas.height!==h) { canvas.width=w; canvas.height=h; } }
-  if(typeof ResizeObserver!=='undefined') new ResizeObserver(syncSize).observe(canvas);
-  syncSize();
-  const gl=canvas.getContext('webgl')||canvas.getContext('experimental-webgl'); if(!gl) return;
-  const vs='attribute vec2 a_position;varying vec2 v_texCoord;void main(){v_texCoord=a_position*0.5+0.5;gl_Position=vec4(a_position,0.0,1.0);}';
-  const fs=`precision highp float;uniform float u_time;uniform vec2 u_resolution;uniform vec2 u_mouse;varying vec2 v_texCoord;float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}float drawChar(vec2 uv,float id,float t){float h=hash(vec2(id,floor(t*8.0)));vec2 char_uv=fract(uv*4.0);float grid=step(0.5,hash(floor(uv*4.0)+id));float shape=0.0;if(h<0.3)shape=step(0.1,char_uv.x)*step(0.1,char_uv.y)*grid;else if(h<0.6)shape=step(0.4,char_uv.x)*grid;else shape=step(0.4,char_uv.y)*grid;return shape;}void main(){vec2 uv=v_texCoord;vec2 mouse=u_mouse/u_resolution;float columns=60.0;vec2 g_uv=uv*vec2(columns,columns*(u_resolution.y/u_resolution.x));vec2 id=floor(g_uv);vec2 f_uv=fract(g_uv);float h=hash(vec2(id.x,71.82));float speed=0.3+h*1.5;float offset=h*200.0;float y_pos=mod(g_uv.y+u_time*speed+offset,columns);float trail=1.0-fract(y_pos*0.1);trail=smoothstep(0.85,1.0,trail);float char=drawChar(f_uv,id.x+floor(y_pos),u_time);float rain=trail*char;vec3 colorTeal=vec3(0.17,0.83,0.75);vec3 colorIndigo=vec3(0.39,0.40,0.95);vec3 finalColor=mix(colorIndigo*0.05,colorTeal,rain*0.6);float columns2=100.0;vec2 g_uv2=uv*vec2(columns2,columns2*(u_resolution.y/u_resolution.x));vec2 id2=floor(g_uv2);float h2=hash(vec2(id2.x,13.37));float y_pos2=mod(g_uv2.y+u_time*(0.2+h2*0.5)+h2*100.0,columns2);float trail2=smoothstep(0.97,1.0,1.0-fract(y_pos2*0.05));finalColor+=trail2*colorIndigo*0.15;float dist=distance(uv,vec2(0.5));float vignette=smoothstep(0.7,0.25,dist);vec3 bgColor=vec3(0.01,0.02,0.09);float pulse=step(0.995,sin(u_time*0.5+h*10.0));finalColor+=pulse*colorTeal*0.1*trail;gl_FragColor=vec4(mix(bgColor,finalColor,vignette),1.0);}`;
-  function cs(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s;}
-  const prog=gl.createProgram();gl.attachShader(prog,cs(gl.VERTEX_SHADER,vs));gl.attachShader(prog,cs(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);gl.useProgram(prog);
-  const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
-  const pos=gl.getAttribLocation(prog,'a_position');gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
-  const uTime=gl.getUniformLocation(prog,'u_time');const uRes=gl.getUniformLocation(prog,'u_resolution');const uMouse=gl.getUniformLocation(prog,'u_mouse');
-  let mouse={x:canvas.width/2,y:canvas.height/2};
-  window.addEventListener('mousemove',(event)=>{const rect=canvas.getBoundingClientRect();if(rect.width&&rect.height){const nx=(event.clientX-rect.left)/rect.width;const ny=1.0-(event.clientY-rect.top)/rect.height;mouse.x=nx*canvas.width;mouse.y=ny*canvas.height;}});
-  function render(t){if(typeof ResizeObserver==='undefined')syncSize();gl.viewport(0,0,canvas.width,canvas.height);if(uTime)gl.uniform1f(uTime,t*0.001);if(uRes)gl.uniform2f(uRes,canvas.width,canvas.height);if(uMouse)gl.uniform2f(uMouse,mouse.x,mouse.y);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(render);}
-  render(0);
-})();
-</script>
-</div>
-</div>
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+* { scrollbar-width: thin; scrollbar-color: #273647 transparent; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #273647; border-radius: 10px; }
 
-<nav class="bg-surface-container-lowest/40 backdrop-blur-3xl fixed top-0 w-full z-50 border-b border-outline-variant/10 flex justify-between items-center px-gutter py-5 max-w-container-max mx-auto md:px-margin-desktop">
-<div class="font-headline-lg text-2xl text-white uppercase tracking-tighter font-bold flex items-center gap-3">
-<div class="relative">
-<span class="w-3 h-3 bg-secondary rounded-sm rotate-45 block"></span>
-<span class="absolute inset-0 w-3 h-3 bg-secondary rounded-sm rotate-45 block blur-[6px] opacity-50"></span>
+.scanner-card { perspective: 1100px; cursor: default; }
+.scanner-inner {
+  position: relative; border-radius: 1rem; padding: 1.5rem; height: 100%; overflow: hidden;
+  background: rgba(5,20,36,0.55); backdrop-filter: blur(22px);
+  border: 1px solid rgba(68,226,205,0.13);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+  transition: box-shadow 0.3s ease, transform 0.55s cubic-bezier(0.22,1,0.36,1);
+}
+.scanner-card:hover .scanner-inner { box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+.scanner-spotlight {
+  position: absolute; inset: 0; border-radius: 1rem; pointer-events: none;
+  opacity: 0; transition: opacity 0.4s;
+}
+.scanner-scanline {
+  position: absolute; top: 0; left: 0; width: 100%; height: 1px; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(68,226,205,0.6), transparent);
+  transform: translateX(-100%); transition: transform 0.9s ease;
+}
+.scanner-card:hover .scanner-scanline { transform: translateX(0%); }
+
+.service-card {
+  position: relative; border-radius: 1.5rem; padding: 2rem;
+  background: rgba(5,20,36,0.55); border: 1px solid rgba(68,226,205,0.11);
+  backdrop-filter: blur(22px); cursor: default;
+  transition: transform 0.5s;
+}
+.service-card:hover { transform: translateY(-0.5rem); }
+.service-card.featured-service:hover { transform: translateY(-0.5rem); }
+
+.arch-item { transition: all 0.6s cubic-bezier(0.22,1,0.36,1); }
+.scanner-card:hover .icon-hover { transform: scale(1.1); }
+.icon-hover { transition: transform 0.3s; }
+.service-card:hover .icon-hover { transform: scale(1.1); }
+.btn-arrow { display: inline-block; transition: transform 0.3s; }
+.btn-group:hover .btn-arrow { transform: translateX(2px); }
+</style>
+</head>
+<body class="bg-[#051424] text-[#e8f4f8] font-body overflow-x-hidden relative min-h-screen">
+
+<div class="fixed inset-0 pointer-events-none z-30" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.025) 3px, rgba(0,0,0,0.025) 4px);"></div>
+<canvas id="particle-canvas" class="fixed inset-0 w-full h-full z-0 pointer-events-none"></canvas>
+<div class="fixed inset-0 pointer-events-none z-[1]" style="background: radial-gradient(ellipse 80% 65% at 50% 50%, rgba(68,226,205,0.055) 0%, rgba(5,20,36,0.55) 55%, #051424 100%);"></div>
+
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-40 transition-all duration-500" style="background: transparent; border-bottom: 1px solid transparent;">
+<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-[10px] flex items-center justify-center" style="background: linear-gradient(135deg, #44e2cd, #6467f2); box-shadow: 0 0 22px rgba(68,226,205,0.45);">
+<span class="text-white text-sm font-bold font-mono tracking-wider">A</span>
 </div>
-        AEGIS
-    </div>
-<div class="hidden md:flex items-center space-x-10">
-<a class="text-on-surface/60 hover:text-white transition-all duration-300 font-code-sm text-xs font-bold tracking-[0.2em] uppercase" href="#scanners">Scanners</a>
-<a class="text-on-surface/60 hover:text-white transition-all duration-300 font-code-sm text-xs font-bold tracking-[0.2em] uppercase" href="#architecture">Architecture</a>
+<span class="font-bold text-white tracking-[0.15em] text-[1.1rem]" style="font-family: var(--font-display, Rajdhani, sans-serif);">AEGIS</span>
 </div>
-<button class="md:hidden text-white/80">
-<span class="material-symbols-outlined" style="font-size: 24px;">drag_handle</span>
-</button>
+<div class="hidden md:flex items-center gap-8">
+<a href="#scanners" class="text-[0.78rem] tracking-[0.06em] transition-colors hover:text-[#44e2cd]" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">Scanners</a>
+<a href="#architecture" class="text-[0.78rem] tracking-[0.06em] transition-colors hover:text-[#44e2cd]" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">Architecture</a>
+<a href="#services" class="text-[0.78rem] tracking-[0.06em] transition-colors hover:text-[#44e2cd]" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">Services</a>
+<a href="/docs" class="text-[0.78rem] tracking-[0.06em] transition-colors hover:text-[#44e2cd]" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">Docs</a>
+</div>
+<a href="/app" class="px-5 py-2 rounded-xl text-[0.78rem] font-semibold tracking-[0.06em] transition-all duration-300 hover:scale-105" style="background: rgba(68,226,205,0.08); border: 1px solid rgba(68,226,205,0.35); color: #44e2cd; font-family: JetBrains Mono, monospace;">Get Access &rarr;</a>
+</div>
 </nav>
 
-<section class="relative min-h-screen flex items-center justify-center pt-24 pb-12 px-gutter md:px-margin-desktop overflow-hidden">
-<div class="relative z-10 text-center max-w-6xl mx-auto cyber-glass p-12 md:p-24 rounded-lg fade-in-up border-white/5">
-<div class="inline-flex items-center space-x-3 bg-surface-container-highest/20 backdrop-blur-md px-5 py-1.5 rounded-sm border border-white/10 mb-12 relative overflow-hidden">
-<div class="scan-line"></div>
-<div class="flex space-x-1">
-<span class="w-1 h-1 bg-secondary animate-pulse"></span>
-<span class="w-1 h-1 bg-secondary animate-pulse" style="animation-delay: 0.2s"></span>
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden z-10">
+<div class="absolute bottom-0 left-0 right-0 h-48 pointer-events-none z-[2]" style="background: linear-gradient(to bottom, transparent, #051424);"></div>
+<div class="relative z-10 text-center max-w-5xl mx-auto px-6 pt-16">
+<div class="inline-flex items-center gap-2.5 rounded-full px-4 py-2 mb-10 fade-in-up" style="animation-delay: 0.2s; background: rgba(68,226,205,0.07); border: 1px solid rgba(68,226,205,0.22);">
+<div class="w-1.5 h-1.5 rounded-full bg-[#44e2cd] animate-pulse"></div>
+<span class="text-[0.72rem] tracking-[0.14em] uppercase" style="color: #44e2cd; font-family: JetBrains Mono, monospace;">AI Security &middot; Real-time Governance</span>
 </div>
-<span class="font-code-sm text-[10px] text-white/70 font-bold uppercase tracking-[0.4em]">AI Security &middot; Real-time Governance</span>
-</div>
-<h1 class="font-headline-xl text-[56px] md:text-[96px] leading-tight md:leading-[1.1] text-white mb-6 tracking-tight text-glow font-bold">
-            Outsmart every threat.<br/>
-<span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-secondary to-tertiary">Automatically.</span>
+<h1 class="font-bold leading-[0.92] mb-7 fade-in-up" style="animation-delay: 0.38s; font-family: Rajdhani, sans-serif; font-size: clamp(4.5rem, 11vw, 9.5rem); background: linear-gradient(140deg, #ffffff 0%, #c8f0ec 40%, #44e2cd 65%, #6467f2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.01em;">
+Outsmart every threat.<br/>
+<span>Automatically.</span>
 </h1>
-<p class="font-headline-lg text-headline-lg text-on-surface/70 max-w-3xl mx-auto mb-4 font-medium">Intelligent threats demand intelligent defense.</p>
-<p class="font-body-md text-on-surface/60 md:text-xl max-w-3xl mx-auto mb-12 leading-relaxed font-normal">
-            Your AI deserves a shield, not a blind spot. Aegis monitors, inspects, and governs every interaction so you can use AI with total confidence.
-        </p>
-<div class="flex flex-col sm:flex-row items-center justify-center space-y-6 sm:space-y-0 sm:space-x-10">
-<a href="/app" class="btn-luxe w-full sm:w-auto px-14 py-5 rounded-lg font-code-sm text-sm tracking-[0.3em]">Be Threat Proof Now</a>
-<a href="#scanners" class="btn-secondary-luxe w-full sm:w-auto px-14 py-5 rounded-lg font-code-sm text-sm tracking-[0.3em]">Explore Scanners</a>
+<p class="text-lg md:text-xl max-w-2xl mx-auto mb-11 leading-relaxed fade-in-up" style="animation-delay: 0.56s; color: #7a9ab0;">
+Intelligent threats demand intelligent defense. Aegis monitors, inspects, and governs every interaction so you can use AI with total confidence.
+</p>
+<div class="flex items-center justify-center gap-4 mb-20 flex-wrap fade-in-up" style="animation-delay: 0.72s;">
+<a href="/app" class="btn-group flex items-center gap-2 px-8 py-4 rounded-2xl text-[0.82rem] font-semibold tracking-[0.06em] transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #44e2cd, #6467f2); color: #051424; font-family: JetBrains Mono, monospace; box-shadow: 0 0 44px rgba(68,226,205,0.28), 0 4px 20px rgba(0,0,0,0.3);">
+Be Threat Proof Now
+<span class="btn-arrow">&rarr;</span>
+</a>
+<a href="#scanners" class="flex items-center gap-2 px-8 py-4 rounded-2xl text-[0.82rem] font-semibold tracking-[0.06em] transition-all duration-300 hover:scale-105" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.13); color: #e8f4f8; font-family: JetBrains Mono, monospace; backdrop-filter: blur(12px);">
+Explore Scanners
+</a>
+</div>
+</div>
+<div class="absolute bottom-9 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5" style="opacity: 0; animation: fadeIn 1s ease-out 1.6s forwards;">
+<span class="text-[0.66rem] tracking-[0.16em] uppercase" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">Scroll</span>
+<div class="animate-bounce"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+</div>
+</section>
+
+<section id="scanners" class="relative py-32 px-6 z-10">
+<div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(68,226,205,0.04) 0%, transparent 65%);"></div>
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<div class="inline-flex items-center gap-3 mb-5 fade-in-up"><div class="w-7 h-px" style="background: #44e2cd;"></div><span class="text-[0.72rem] uppercase tracking-[0.14em]" style="color: #44e2cd; font-family: JetBrains Mono, monospace;">Security Shields</span><div class="w-7 h-px" style="background: #44e2cd;"></div></div>
+<h2 class="text-[2.6rem] md:text-5xl font-bold text-white mb-4 leading-tight fade-in-up" style="font-family: Rajdhani, sans-serif; letter-spacing: -0.015em;">Every threat caught. Every risk blocked.</h2>
+<p class="text-base md:text-lg max-w-lg mx-auto fade-in-up" style="animation-delay: 0.1s; color: #7a9ab0;">You don't need to be a tech expert to understand how we keep you safe.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+<div class="scanner-card"><div class="scanner-inner"><div class="scanner-spotlight"></div><div class="scanner-scanline"></div><div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5 icon-hover" style="background: rgba(68,226,205,0.12); border: 1px solid rgba(68,226,205,0.28); color: #44e2cd;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3 class="font-semibold text-white text-[1.05rem] mb-2 leading-snug" style="font-family: Rajdhani, sans-serif; letter-spacing: 0.01em;">Prompt Injection</h3><p class="text-[0.8rem] leading-relaxed mb-2" style="color: #7a9ab0;">Attackers hide instructions to trick your AI into breaking its rules. We detect jailbreak attempts, encoded payloads, and manipulation before they reach the model.</p></div></div>
+<div class="scanner-card"><div class="scanner-inner"><div class="scanner-spotlight"></div><div class="scanner-scanline"></div><div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5 icon-hover" style="background: rgba(100,103,242,0.12); border: 1px solid rgba(100,103,242,0.28); color: #6467f2;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><h3 class="font-semibold text-white text-[1.05rem] mb-2 leading-snug" style="font-family: Rajdhani, sans-serif; letter-spacing: 0.01em;">Data Leakage</h3><p class="text-[0.8rem] leading-relaxed mb-2" style="color: #7a9ab0;">Your emails, phone numbers, passwords, and financial data stay yours. Every prompt and response is scanned so private information never leaks to unauthorized parties.</p></div></div>
+<div class="scanner-card"><div class="scanner-inner"><div class="scanner-spotlight"></div><div class="scanner-scanline"></div><div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5 icon-hover" style="background: rgba(68,226,205,0.12); border: 1px solid rgba(68,226,205,0.28); color: #44e2cd;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><h3 class="font-semibold text-white text-[1.05rem] mb-2 leading-snug" style="font-family: Rajdhani, sans-serif; letter-spacing: 0.01em;">Malicious Code</h3><p class="text-[0.8rem] leading-relaxed mb-2" style="color: #7a9ab0;">AI outputs can contain dangerous code that deletes files or exfiltrates data. We identify and block harmful commands before they execute on your system.</p></div></div>
+<div class="scanner-card"><div class="scanner-inner"><div class="scanner-spotlight"></div><div class="scanner-scanline"></div><div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5 icon-hover" style="background: rgba(100,103,242,0.12); border: 1px solid rgba(100,103,242,0.28); color: #6467f2;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div><h3 class="font-semibold text-white text-[1.05rem] mb-2 leading-snug" style="font-family: Rajdhani, sans-serif; letter-spacing: 0.01em;">Data Flow Tracking</h3><p class="text-[0.8rem] leading-relaxed mb-2" style="color: #7a9ab0;">Ever wonder where your data ends up? We map every destination, inspect headers and payloads, and flag suspicious endpoints so you always remain in control.</p></div></div>
+<div class="scanner-card"><div class="scanner-inner"><div class="scanner-spotlight"></div><div class="scanner-scanline"></div><div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5 icon-hover" style="background: rgba(68,226,205,0.12); border: 1px solid rgba(68,226,205,0.28); color: #44e2cd;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><h3 class="font-semibold text-white text-[1.05rem] mb-2 leading-snug" style="font-family: Rajdhani, sans-serif; letter-spacing: 0.01em;">Rogue Agents</h3><p class="text-[0.8rem] leading-relaxed mb-2" style="color: #7a9ab0;">Autonomous agents can act without oversight. We detect hidden workflows, automation chains, and unauthorized actions in real time to prevent runaway behavior.</p></div></div>
+<div class="scanner-card"><div class="scanner-inner"><div class="scanner-spotlight"></div><div class="scanner-scanline"></div><div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5 icon-hover" style="background: rgba(100,103,242,0.12); border: 1px solid rgba(100,103,242,0.28); color: #6467f2;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h3 class="font-semibold text-white text-[1.05rem] mb-2 leading-snug" style="font-family: Rajdhani, sans-serif; letter-spacing: 0.01em;">Policy Enforcement</h3><p class="text-[0.8rem] leading-relaxed mb-2" style="color: #7a9ab0;">Define exactly what your AI may and may not do. If an action falls outside your rules, we block it instantly and alert you. No exceptions, no surprises.</p></div></div>
 </div>
 </div>
 </section>
 
-<section class="py-32 px-gutter md:px-margin-desktop max-w-container-max mx-auto relative z-10">
-<div class="mb-24 fade-in-up">
-<div class="flex items-center gap-4 mb-4">
-<span class="h-[1px] w-12 bg-secondary/50"></span>
-<span class="font-label-caps text-secondary text-[11px] uppercase tracking-[0.5em]">Security Shields</span>
-</div>
-<h2 class="font-headline-lg text-4xl md:text-[56px] text-white mb-8 font-bold tracking-tight">Every threat caught. Every risk blocked.</h2>
-<p class="font-body-md text-on-surface/60 max-w-2xl text-lg leading-relaxed">You don't need to be a tech expert to understand how we keep you safe. Here is exactly what we protect you from.</p>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-<div class="cyber-glass p-12 rounded-lg group relative overflow-hidden fade-in-up border-white/5" style="animation-delay: 0.1s;">
-<div class="absolute top-0 right-0 p-4 font-code-sm text-[10px] text-white/10 uppercase tracking-widest">INJ // 01</div>
-<span class="material-symbols-outlined text-4xl text-secondary mb-10 block opacity-80 group-hover:opacity-100 transition-opacity" style="font-variation-settings: 'FILL' 0, 'wght' 200;">shield_with_heart</span>
-<h3 class="font-code-sm text-xl text-white mb-5 tracking-widest uppercase font-bold">Prompt Injection</h3>
-<p class="font-body-md text-on-surface/50 text-base leading-relaxed group-hover:text-on-surface/80 transition-colors">
-                Attackers hide instructions to trick your AI into breaking its rules. We detect jailbreak attempts, encoded payloads, and manipulation before they reach the model.
-            </p>
-<div class="mt-8 pt-8 border-t border-white/5 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="text-[10px] font-code-sm text-secondary uppercase tracking-widest">Active</span>
-<span class="w-2 h-2 bg-secondary rounded-full animate-ping"></span>
-</div>
-</div>
-<div class="cyber-glass p-12 rounded-lg group relative overflow-hidden md:translate-y-8 fade-in-up border-white/5" style="animation-delay: 0.2s;">
-<div class="absolute top-0 right-0 p-4 font-code-sm text-[10px] text-white/10 uppercase tracking-widest">LEAK // 02</div>
-<span class="material-symbols-outlined text-4xl text-on-tertiary-container mb-10 block opacity-80 group-hover:opacity-100 transition-opacity" style="font-variation-settings: 'FILL' 0, 'wght' 200;">admin_panel_settings</span>
-<h3 class="font-code-sm text-xl text-white mb-5 tracking-widest uppercase font-bold">Data Leakage</h3>
-<p class="font-body-md text-on-surface/50 text-base leading-relaxed group-hover:text-on-surface/80 transition-colors">
-                Your emails, phone numbers, passwords, and financial data stay yours. Every prompt and response is scanned so private information never leaks to unauthorized parties.
-            </p>
-<div class="mt-8 pt-8 border-t border-white/5 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="text-[10px] font-code-sm text-tertiary uppercase tracking-widest">Encrypted</span>
-<span class="w-2 h-2 bg-tertiary rounded-full"></span>
+<section id="architecture" class="relative py-32 px-6 z-10 overflow-hidden">
+<div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 55% 60% at 0% 50%, rgba(100,103,242,0.07) 0%, transparent 65%);"></div>
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="opacity-0" id="arch-tree">
+<div class="rounded-3xl p-8 relative overflow-hidden" style="background: rgba(5,20,36,0.65); border: 1px solid rgba(68,226,205,0.14); backdrop-filter: blur(24px); box-shadow: 0 30px 80px rgba(0,0,0,0.35);">
+<div class="absolute -top-16 -right-16 w-48 h-48 rounded-full pointer-events-none" style="background: rgba(100,103,242,0.08); filter: blur(40px);"></div>
+<div class="text-[0.78rem] mb-7" style="color: #44e2cd; font-family: JetBrains Mono, monospace;">// Aegis Runtime Architecture</div>
+<div class="space-y-2.5" style="font-family: JetBrains Mono, monospace; font-size: 0.78rem;">
+<div class="flex items-center"><span style="color: #44e2cd;">INGRESS PROXY</span><span class="ml-auto text-[0.65rem] px-2 py-0.5 rounded-md" style="background: rgba(68,226,205,0.1); color: #44e2cd; border: 1px solid rgba(68,226,205,0.2);">ACTIVE</span></div>
+<div class="flex items-center" style="padding-left: 14px;"><span style="color: #6467f2;">&boxv;&boxh; Request Interceptor</span></div>
+<div class="flex items-center" style="padding-left: 28px;"><span style="color: #7a9ab0;">&boxv;&boxh; &boxh; Injection Scanner</span></div>
+<div class="flex items-center" style="padding-left: 28px;"><span style="color: #7a9ab0;">&boxv;&boxh; &boxh; Policy Engine</span></div>
+<div class="flex items-center" style="padding-left: 28px;"><span style="color: #7a9ab0;">&boxv;&boxh; &boxh; Auth Validator</span></div>
+<div class="flex items-center" style="padding-left: 14px;"><span style="color: #6467f2;">&boxv;&boxh; LLM Gateway</span></div>
+<div class="flex items-center" style="padding-left: 28px;"><span style="color: #7a9ab0;">&boxv;&boxh; &boxh; Model Router</span></div>
+<div class="flex items-center" style="padding-left: 28px;"><span style="color: #7a9ab0;">&boxv;&boxh; &boxh; Response Filter</span></div>
+<div class="flex items-center" style="padding-left: 14px;"><span style="color: #6467f2;">&boxv;&boxh; Agent Monitor</span></div>
+<div class="flex items-center" style="padding-left: 28px;"><span style="color: #7a9ab0;">&boxh; &boxh; Behavior Analyzer</span></div>
+<div class="flex items-center" style="padding-left: 28px;"><span style="color: #7a9ab0;">&boxh; &boxh; Anomaly Detector</span></div>
 </div>
 </div>
-<div class="cyber-glass p-12 rounded-lg group relative overflow-hidden md:translate-y-16 fade-in-up border-white/5" style="animation-delay: 0.3s;">
-<div class="absolute top-0 right-0 p-4 font-code-sm text-[10px] text-white/10 uppercase tracking-widest">CODE // 03</div>
-<span class="material-symbols-outlined text-4xl text-secondary mb-10 block opacity-80 group-hover:opacity-100 transition-opacity" style="font-variation-settings: 'FILL' 0, 'wght' 200;">settings_input_component</span>
-<h3 class="font-code-sm text-xl text-white mb-5 tracking-widest uppercase font-bold">Malicious Code</h3>
-<p class="font-body-md text-on-surface/50 text-base leading-relaxed group-hover:text-on-surface/80 transition-colors">
-                AI outputs can contain dangerous code that deletes files or exfiltrates data. We identify and block harmful commands before they execute on your system.
-            </p>
-<div class="mt-8 pt-8 border-t border-white/5 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="text-[10px] font-code-sm text-secondary uppercase tracking-widest">Standby</span>
-<span class="w-2 h-2 bg-secondary/40 rounded-full"></span>
 </div>
-</div>
-<div class="cyber-glass p-12 rounded-lg group relative overflow-hidden fade-in-up border-white/5" style="animation-delay: 0.4s;">
-<div class="absolute top-0 right-0 p-4 font-code-sm text-[10px] text-white/10 uppercase tracking-widest">FLOW // 04</div>
-<span class="material-symbols-outlined text-4xl text-on-tertiary-container mb-10 block opacity-80 group-hover:opacity-100 transition-opacity" style="font-variation-settings: 'FILL' 0, 'wght' 200;">alt_route</span>
-<h3 class="font-code-sm text-xl text-white mb-5 tracking-widest uppercase font-bold">Data Flow Tracking</h3>
-<p class="font-body-md text-on-surface/50 text-base leading-relaxed group-hover:text-on-surface/80 transition-colors">
-                Ever wonder where your data ends up? We map every destination, inspect headers and payloads, and flag suspicious endpoints so you always remain in control.
-            </p>
-<div class="mt-8 pt-8 border-t border-white/5 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="text-[10px] font-code-sm text-secondary uppercase tracking-widest">Active</span>
-<span class="w-2 h-2 bg-secondary rounded-full animate-ping"></span>
-</div>
-</div>
-<div class="cyber-glass p-12 rounded-lg group relative overflow-hidden md:translate-y-8 fade-in-up border-white/5" style="animation-delay: 0.5s;">
-<div class="absolute top-0 right-0 p-4 font-code-sm text-[10px] text-white/10 uppercase tracking-widest">AGENT // 05</div>
-<span class="material-symbols-outlined text-4xl text-secondary mb-10 block opacity-80 group-hover:opacity-100 transition-opacity" style="font-variation-settings: 'FILL' 0, 'wght' 200;">radar</span>
-<h3 class="font-code-sm text-xl text-white mb-5 tracking-widest uppercase font-bold">Rogue Agents</h3>
-<p class="font-body-md text-on-surface/50 text-base leading-relaxed group-hover:text-on-surface/80 transition-colors">
-                Autonomous agents can act without oversight. We detect hidden workflows, automation chains, and unauthorized actions in real time to prevent runaway behavior.
-            </p>
-<div class="mt-8 pt-8 border-t border-white/5 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="text-[10px] font-code-sm text-tertiary uppercase tracking-widest">Monitoring</span>
-<span class="w-2 h-2 bg-tertiary rounded-full"></span>
-</div>
-</div>
-<div class="cyber-glass p-12 rounded-lg group relative overflow-hidden md:translate-y-16 fade-in-up border-white/5" style="animation-delay: 0.6s;">
-<div class="absolute top-0 right-0 p-4 font-code-sm text-[10px] text-white/10 uppercase tracking-widest">POL // 06</div>
-<span class="material-symbols-outlined text-4xl text-on-tertiary-container mb-10 block opacity-80 group-hover:opacity-100 transition-opacity" style="font-variation-settings: 'FILL' 0, 'wght' 200;">gavel</span>
-<h3 class="font-code-sm text-xl text-white mb-5 tracking-widest uppercase font-bold">Policy Enforcement</h3>
-<p class="font-body-md text-on-surface/50 text-base leading-relaxed group-hover:text-on-surface/80 transition-colors">
-                Define exactly what your AI may and may not do. If an action falls outside your rules, we block it instantly and alert you. No exceptions, no surprises.
-            </p>
-<div class="mt-8 pt-8 border-t border-white/5 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="text-[10px] font-code-sm text-secondary uppercase tracking-widest">Ready</span>
-<span class="w-2 h-2 bg-secondary/40 rounded-full"></span>
+<div class="opacity-0" id="arch-text">
+<div class="inline-flex items-center gap-3 mb-5"><div class="w-7 h-px" style="background: #6467f2;"></div><span class="text-[0.72rem] uppercase tracking-[0.14em]" style="color: #6467f2; font-family: JetBrains Mono, monospace;">System Architecture</span><div class="w-7 h-px" style="background: #6467f2;"></div></div>
+<h2 class="text-[2.4rem] md:text-[2.8rem] font-bold text-white mb-6 leading-[1.08]" style="font-family: Rajdhani, sans-serif; letter-spacing: -0.015em;">Sits between you and the risk.</h2>
+<p class="text-base leading-relaxed mb-10" style="color: #7a9ab0;">Aegis acts as an immutable security checkpoint for every AI call, inspecting and verifying before anything reaches your systems.</p>
+<div class="space-y-6">
+<div class="flex gap-4 opacity-0 arch-item"><div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 icon-hover" style="background: rgba(68,226,205,0.1); color: #44e2cd; border: 1px solid rgba(68,226,205,0.18);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></div><div><div class="font-semibold text-white mb-1 text-[0.95rem]">Scanner Engine</div><div class="text-[0.82rem] leading-relaxed" style="color: #7a9ab0;">Every request and response is checked against deterministic security rules in milliseconds.</div></div></div>
+<div class="flex gap-4 opacity-0 arch-item"><div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 icon-hover" style="background: rgba(68,226,205,0.1); color: #44e2cd; border: 1px solid rgba(68,226,205,0.18);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><div><div class="font-semibold text-white mb-1 text-[0.95rem]">Policy Engine</div><div class="text-[0.82rem] leading-relaxed" style="color: #7a9ab0;">Your custom policies are evaluated. Approved actions pass through; everything else is blocked and logged.</div></div></div>
+<div class="flex gap-4 opacity-0 arch-item"><div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 icon-hover" style="background: rgba(68,226,205,0.1); color: #44e2cd; border: 1px solid rgba(68,226,205,0.18);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><rect x="8" y="13" width="8" height="2" rx="1"/><rect x="8" y="17" width="5" height="2" rx="1"/></svg></div><div><div class="font-semibold text-white mb-1 text-[0.95rem]">Audit Trail</div><div class="text-[0.82rem] leading-relaxed" style="color: #7a9ab0;">Every interaction is recorded immutably, providing a complete forensic record for compliance and investigation.</div></div></div>
 </div>
 </div>
 </div>
 </section>
 
-<section id="architecture" class="py-40 px-gutter md:px-margin-desktop max-w-container-max mx-auto relative z-10 border-t border-white/5">
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-<div class="space-y-12 fade-in-up">
-<div class="inline-flex items-center space-x-4 font-label-caps text-secondary/70 tracking-[0.4em] uppercase font-bold text-[10px]">
-<span class="material-symbols-outlined text-[16px]">schema</span>
-<span>System Architecture</span>
+<section id="services" class="relative py-32 px-6 z-10">
+<div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 55% 55% at 100% 50%, rgba(68,226,205,0.045) 0%, transparent 65%);"></div>
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<div class="inline-flex items-center gap-3 mb-5 fade-in-up"><div class="w-7 h-px" style="background: #44e2cd;"></div><span class="text-[0.72rem] uppercase tracking-[0.14em]" style="color: #44e2cd; font-family: JetBrains Mono, monospace;">Our Services</span><div class="w-7 h-px" style="background: #44e2cd;"></div></div>
+<h2 class="text-[2.6rem] md:text-5xl font-bold text-white mb-4 leading-tight fade-in-up" style="font-family: Rajdhani, sans-serif; letter-spacing: -0.015em;">What you get with Aegis</h2>
+<p class="text-base md:text-lg max-w-lg mx-auto fade-in-up" style="animation-delay: 0.1s; color: #7a9ab0;">Everything you need to make your AI usage safe, transparent, and compliant.</p>
 </div>
-<h2 class="font-headline-xl text-[44px] md:text-[64px] leading-tight text-white font-bold">Sits between you and the risk.</h2>
-<div class="space-y-8 text-on-surface/70 font-body-md text-lg">
-<p class="leading-relaxed">Aegis acts as an immutable security checkpoint for every AI call, inspecting and verifying before anything reaches your systems.</p>
-<div class="space-y-6 mt-10">
-<div class="flex items-start space-x-6 cyber-glass bg-white/0 p-6 rounded-lg border-white/5 group hover:border-secondary/20 transition-all">
-<div class="p-3 rounded-sm bg-white/5 text-secondary border border-white/10 group-hover:bg-secondary group-hover:text-black transition-all">
-<span class="material-symbols-outlined text-[20px]">scan</span>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+<div class="service-card opacity-0"><div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 icon-hover" style="background: rgba(68,226,205,0.12); color: #44e2cd; border: 1px solid rgba(68,226,205,0.22);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div><div class="text-[0.7rem] uppercase tracking-[0.12em] mb-2" style="color: #44e2cd; font-family: JetBrains Mono, monospace;">Service</div><h3 class="text-xl font-bold text-white mb-3" style="font-family: Rajdhani, sans-serif; letter-spacing: 0.01em;">Real-time Monitoring</h3><p class="text-[0.82rem] leading-relaxed mb-6" style="color: #7a9ab0;">Watch every AI interaction live. See what data flows in and out and receive instant alerts on detected threats.</p></div>
+<div class="service-card opacity-0 featured-service" style="background: linear-gradient(145deg, rgba(100,103,242,0.18), rgba(68,226,205,0.09)); border: 1px solid rgba(100,103,242,0.38); box-shadow: 0 20px 60px rgba(100,103,242,0.12);"><div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[0.7rem] font-semibold tracking-[0.06em]" style="background: linear-gradient(135deg, #6467f2, #44e2cd); color: #051424; font-family: JetBrains Mono, monospace;">Most Popular</div><div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 icon-hover" style="background: rgba(100,103,242,0.12); color: #6467f2; border: 1px solid rgba(100,103,242,0.22);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div class="text-[0.7rem] uppercase tracking-[0.12em] mb-2" style="color: #6467f2; font-family: JetBrains Mono, monospace;">Enterprise</div><h3 class="text-xl font-bold text-white mb-3" style="font-family: Rajdhani, sans-serif; letter-spacing: 0.01em;">Audit Trail</h3><p class="text-[0.82rem] leading-relaxed mb-6" style="color: #7a9ab0;">Complete, tamper-proof logs of every AI action. Built for compliance, investigations, and full transparency.</p></div>
+<div class="service-card opacity-0"><div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 icon-hover" style="background: rgba(68,226,205,0.12); color: #44e2cd; border: 1px solid rgba(68,226,205,0.22);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div class="text-[0.7rem] uppercase tracking-[0.12em] mb-2" style="color: #44e2cd; font-family: JetBrains Mono, monospace;">Service</div><h3 class="text-xl font-bold text-white mb-3" style="font-family: Rajdhani, sans-serif; letter-spacing: 0.01em;">Threat Intelligence</h3><p class="text-[0.82rem] leading-relaxed mb-6" style="color: #7a9ab0;">Stay ahead of emerging attack vectors. Our rule engine updates continuously to protect against the latest AI vulnerabilities.</p></div>
 </div>
+</div>
+</section>
+
+<section class="relative py-36 px-6 z-10 overflow-hidden">
+<div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(68,226,205,0.07) 0%, transparent 68%);"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none" style="border: 1px solid rgba(68,226,205,0.07);"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full pointer-events-none" style="border: 1px solid rgba(100,103,242,0.09);"></div>
+<div class="max-w-4xl mx-auto text-center relative z-10">
+<div class="opacity-0" id="cta-content">
+<div class="w-20 h-20 rounded-[22px] flex items-center justify-center mx-auto mb-9" style="background: linear-gradient(135deg, rgba(68,226,205,0.18), rgba(100,103,242,0.18)); border: 1px solid rgba(68,226,205,0.28); box-shadow: 0 0 70px rgba(68,226,205,0.14);">
+<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+</div>
+<h2 class="font-bold text-white mb-6 leading-[1.05]" style="font-family: Rajdhani, sans-serif; font-size: clamp(2.4rem, 5vw, 4rem); letter-spacing: -0.015em;">Ready to make your <span style="background: linear-gradient(135deg, #44e2cd, #6467f2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">AI unhackable</span>?</h2>
+<p class="text-base md:text-lg mb-11 max-w-xl mx-auto" style="color: #7a9ab0;">Join the future of secure AI. No setup hassle, no technical knowledge required.</p>
+<div class="flex items-center justify-center gap-4 flex-wrap">
+<a href="/app" class="btn-group flex items-center gap-2 px-8 py-4 rounded-2xl text-[0.82rem] font-semibold tracking-[0.06em] transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #44e2cd, #6467f2); color: #051424; font-family: JetBrains Mono, monospace; box-shadow: 0 0 55px rgba(68,226,205,0.22), 0 4px 24px rgba(0,0,0,0.3);">Be Threat Proof Now <span class="btn-arrow">&rarr;</span></a>
+<a href="/docs" class="flex items-center gap-2 px-8 py-4 rounded-2xl text-[0.82rem] font-semibold tracking-[0.06em] transition-all duration-300 hover:scale-105" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: #e8f4f8; font-family: JetBrains Mono, monospace; backdrop-filter: blur(12px);">View Documentation</a>
+</div>
+</div>
+</div>
+</section>
+
+<footer class="relative z-10" style="border-top: 1px solid rgba(68,226,205,0.09);">
+<div class="max-w-7xl mx-auto px-6 py-12">
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-8">
 <div>
-<strong class="text-white font-code-sm text-sm uppercase tracking-widest block mb-2">Scanner Engine</strong>
-<p class="text-on-surface/60 text-base leading-relaxed">Every request and response is checked against 50+ deterministic security rules in milliseconds.</p>
+<div class="flex items-center gap-3 mb-3">
+<div class="w-8 h-8 rounded-[10px] flex items-center justify-center" style="background: linear-gradient(135deg, #44e2cd, #6467f2);"><span class="text-white text-sm font-bold font-mono tracking-wider">A</span></div>
+<span class="font-bold text-white tracking-[0.15em] text-[1.05rem]" style="font-family: Rajdhani, sans-serif;">AEGIS</span>
+</div>
+<p class="text-[0.8rem] max-w-[220px] leading-relaxed" style="color: #7a9ab0;">AI Security &amp; Governance Layer. Monitor, verify, protect.</p>
+</div>
+<div class="flex flex-wrap gap-x-8 gap-y-3">
+<a href="#scanners" class="text-[0.78rem] tracking-[0.04em] transition-colors hover:text-[#44e2cd]" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">Scanners</a>
+<a href="#architecture" class="text-[0.78rem] tracking-[0.04em] transition-colors hover:text-[#44e2cd]" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">Architecture</a>
+<a href="#services" class="text-[0.78rem] tracking-[0.04em] transition-colors hover:text-[#44e2cd]" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">Services</a>
+<a href="/docs" class="text-[0.78rem] tracking-[0.04em] transition-colors hover:text-[#44e2cd]" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">API Docs</a>
+<a href="/app" class="text-[0.78rem] tracking-[0.04em] transition-colors hover:text-[#44e2cd]" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">Console</a>
 </div>
 </div>
-<div class="flex items-start space-x-6 cyber-glass bg-white/0 p-6 rounded-lg border-white/5 group hover:border-secondary/20 transition-all">
-<div class="p-3 rounded-sm bg-white/5 text-secondary border border-white/10 group-hover:bg-secondary group-hover:text-black transition-all">
-<span class="material-symbols-outlined text-[20px]">policy</span>
-</div>
-<div>
-<strong class="text-white font-code-sm text-sm uppercase tracking-widest block mb-2">Policy Engine</strong>
-<p class="text-on-surface/60 text-base leading-relaxed">Your custom policies are evaluated. Approved actions pass through; everything else is blocked and logged.</p>
-</div>
-</div>
-<div class="flex items-start space-x-6 cyber-glass bg-white/0 p-6 rounded-lg border-white/5 group hover:border-secondary/20 transition-all">
-<div class="p-3 rounded-sm bg-white/5 text-secondary border border-white/10 group-hover:bg-secondary group-hover:text-black transition-all">
-<span class="material-symbols-outlined text-[20px]">receipt_long</span>
-</div>
-<div>
-<strong class="text-white font-code-sm text-sm uppercase tracking-widest block mb-2">Audit Trail</strong>
-<p class="text-on-surface/60 text-base leading-relaxed">Every interaction is recorded immutably, providing a complete forensic record for compliance and investigation.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="relative w-full aspect-square cyber-glass rounded-lg flex items-center justify-center p-1 border-white/5 fade-in-up" style="animation-delay: 0.2s;">
-<div class="w-full h-full border border-white/5 rounded-sm bg-black/60 relative overflow-hidden flex flex-col p-10 font-code-sm text-[11px] text-secondary/30">
-<div class="scan-line" style="animation-duration: 8s; opacity: 0.2"></div>
-<div class="flex justify-between items-center mb-10">
-<div class="flex gap-2">
-<span class="w-2 h-2 rounded-full bg-red-500/40"></span>
-<span class="w-2 h-2 rounded-full bg-yellow-500/40"></span>
-<span class="w-2 h-2 rounded-full bg-green-500/40"></span>
-</div>
-<div class="tracking-[0.3em] text-white/20 uppercase font-bold">Architecture: Aegis_v1.0</div>
-</div>
-<div class="flex-grow flex flex-col justify-center items-center gap-8">
-<div class="w-32 h-32 border border-secondary/20 rounded-full flex items-center justify-center animate-[pulse_4s_infinite] relative">
-<span class="material-symbols-outlined text-4xl text-secondary/40">security</span>
-<div class="absolute inset-0 border border-secondary/10 rounded-full animate-[ping_3s_infinite]"></div>
-</div>
-<div class="w-full grid grid-cols-2 gap-4 max-w-md">
-<div class="h-1 bg-white/5 relative overflow-hidden"><div class="absolute inset-0 bg-secondary/20 w-1/2 animate-[slide_2s_infinite]"></div></div>
-<div class="h-1 bg-white/5 relative overflow-hidden"><div class="absolute inset-0 bg-secondary/20 w-3/4 animate-[slide_3s_infinite_reverse]"></div></div>
-</div>
-<div class="text-center space-y-2 opacity-50">
-<div class="tracking-[0.4em] uppercase text-white/40">System: Operational</div>
-<div class="flex items-center justify-center gap-4">
-<span class="w-8 h-px bg-white/10"></span>
-<span class="text-[9px] uppercase tracking-[0.6em]">All Clear</span>
-<span class="w-8 h-px bg-white/10"></span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<section class="py-32 px-gutter md:px-margin-desktop max-w-container-max mx-auto relative z-10 border-t border-white/5">
-<div class="mb-24 fade-in-up">
-<div class="flex items-center gap-4 mb-4">
-<span class="h-[1px] w-12 bg-secondary/50"></span>
-<span class="font-label-caps text-secondary text-[11px] uppercase tracking-[0.5em]">Our Services</span>
-</div>
-<h2 class="font-headline-lg text-4xl md:text-[56px] text-white mb-8 font-bold tracking-tight">What you get with Aegis</h2>
-<p class="font-body-md text-on-surface/60 max-w-2xl text-lg leading-relaxed">Everything you need to make your AI usage safe, transparent, and compliant — no technical expertise required.</p>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-<div class="cyber-glass p-10 rounded-lg group relative overflow-hidden fade-in-up border-white/5" style="animation-delay: 0.1s;">
-<span class="material-symbols-outlined text-3xl text-secondary mb-6 block opacity-80 group-hover:opacity-100 transition-all" style="font-variation-settings:'FILL' 0,'wght' 200;">monitoring</span>
-<h4 class="font-code-sm text-lg text-white mb-3 tracking-widest uppercase font-bold">Real-time Monitoring</h4>
-<p class="font-body-md text-on-surface/50 text-sm leading-relaxed group-hover:text-on-surface/80 transition-colors">Watch every AI interaction live. See what data flows in and out and receive instant alerts on any detected threats.</p>
-</div>
-<div class="cyber-glass p-10 rounded-lg group relative overflow-hidden md:translate-y-6 fade-in-up border-white/5" style="animation-delay: 0.2s;">
-<span class="material-symbols-outlined text-3xl text-on-tertiary-container mb-6 block opacity-80 group-hover:opacity-100 transition-all" style="font-variation-settings:'FILL' 0,'wght' 200;">receipt_long</span>
-<h4 class="font-code-sm text-lg text-white mb-3 tracking-widest uppercase font-bold">Audit Trail</h4>
-<p class="font-body-md text-on-surface/50 text-sm leading-relaxed group-hover:text-on-surface/80 transition-colors">Complete, tamper-proof logs of every AI action. Built for compliance, investigations, and full transparency.</p>
-</div>
-<div class="cyber-glass p-10 rounded-lg group relative overflow-hidden fade-in-up border-white/5" style="animation-delay: 0.3s;">
-<span class="material-symbols-outlined text-3xl text-secondary mb-6 block opacity-80 group-hover:opacity-100 transition-all" style="font-variation-settings:'FILL' 0,'wght' 200;">psychology</span>
-<h4 class="font-code-sm text-lg text-white mb-3 tracking-widest uppercase font-bold">Threat Intelligence</h4>
-<p class="font-body-md text-on-surface/50 text-sm leading-relaxed group-hover:text-on-surface/80 transition-colors">Stay ahead of emerging attack vectors. Our rule engine updates continuously to protect against the latest AI vulnerabilities.</p>
-</div>
-<div class="cyber-glass p-10 rounded-lg group relative overflow-hidden md:translate-y-6 fade-in-up border-white/5" style="animation-delay: 0.4s;">
-<span class="material-symbols-outlined text-3xl text-on-tertiary-container mb-6 block opacity-80 group-hover:opacity-100 transition-all" style="font-variation-settings:'FILL' 0,'wght' 200;">tune</span>
-<h4 class="font-code-sm text-lg text-white mb-3 tracking-widest uppercase font-bold">Custom Policies</h4>
-<p class="font-body-md text-on-surface/50 text-sm leading-relaxed group-hover:text-on-surface/80 transition-colors">Define granular rules for every agent, workflow, or application. You decide exactly what your AI can and cannot do.</p>
-</div>
-</div>
-</section>
-
-<section class="py-48 px-gutter md:px-margin-desktop relative z-10 flex flex-col items-center justify-center text-center border-t border-white/5 bg-transparent overflow-hidden">
-<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-secondary/5 rounded-full blur-[180px] opacity-20 pointer-events-none"></div>
-<div class="relative z-10 max-w-4xl fade-in-up">
-<div class="mb-8 font-code-sm text-[12px] text-secondary font-bold tracking-[0.6em] uppercase">Final Security Layer</div>
-<h2 class="font-headline-xl text-[48px] md:text-[80px] text-white mb-10 tracking-tight font-bold text-glow">Ready to make your AI unhackable?</h2>
-<p class="font-code-sm text-on-surface/50 max-w-2xl mx-auto mb-20 leading-relaxed uppercase tracking-[0.3em] font-semibold text-xs border-y border-white/5 py-6">
-            Join the future of secure AI. No setup hassle, no technical knowledge required — just ironclad protection from day one.
-        </p>
-<div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-10">
-<a href="/app" class="btn-luxe px-20 py-7 rounded-lg font-code-sm text-[18px] tracking-[0.4em]">Be Threat Proof Now</a>
-</div>
-</div>
-</section>
-
-<footer class="bg-surface-container-lowest/70 backdrop-blur-3xl border-t border-white/5 w-full relative z-10">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-16 px-gutter md:px-margin-desktop py-24 max-w-container-max mx-auto">
-<div class="md:col-span-5">
-<div class="font-headline-xl text-[36px] text-white mb-6 font-bold tracking-tighter">AEGIS</div>
-<p class="font-body-md text-on-surface/40 text-sm max-w-xs leading-relaxed">AI Security &amp; Governance Layer. Monitor, verify, protect.</p>
-<div class="mt-8 font-code-sm text-[10px] text-secondary/60 font-bold tracking-[0.4em] uppercase">SYSTEM STABILITY 100.0%</div>
-</div>
-<div class="md:col-span-2 space-y-6 flex flex-col font-code-sm text-[11px] tracking-[0.2em] uppercase font-bold">
-<span class="text-white/20 mb-2">Resources</span>
-<a class="text-on-surface/60 hover:text-secondary transition-all" href="/docs">API Docs</a>
-<a class="text-on-surface/60 hover:text-secondary transition-all" href="/app">Console</a>
-</div>
-<div class="md:col-span-2 space-y-6 flex flex-col font-code-sm text-[11px] tracking-[0.2em] uppercase font-bold">
-<span class="text-white/20 mb-2">Legal</span>
-<a class="text-on-surface/60 hover:text-secondary transition-all" href="#">Terms</a>
-<a class="text-on-surface/60 hover:text-secondary transition-all" href="#">Privacy</a>
-</div>
-<div class="md:col-span-3 flex items-end justify-start md:justify-end">
-<div class="text-right">
-<p class="font-code-sm text-on-surface/30 text-[10px] tracking-widest">&copy; 2026 Aegis — AI Security &amp; Governance Layer.</p>
-<p class="font-code-sm text-secondary/30 text-[9px] tracking-[0.6em] mt-3 font-bold">VER 1.0.0 // Q-SECURED</p>
+<div class="flex flex-col md:flex-row items-center justify-between gap-4 pt-7" style="border-top: 1px solid rgba(68,226,205,0.07);">
+<p class="text-[0.73rem]" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">&copy; 2026 Aegis &mdash; AI Security &amp; Governance Layer</p>
+<div class="flex gap-7">
+<button onclick="openPolicy('privacy')" class="text-[0.73rem] hover:text-[#44e2cd] transition-colors" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">Privacy Policy</button>
+<button onclick="openPolicy('terms')" class="text-[0.73rem] hover:text-[#44e2cd] transition-colors" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">Terms of Service</button>
+<button onclick="openPolicy('cookies')" class="text-[0.73rem] hover:text-[#44e2cd] transition-colors" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">Cookie Policy</button>
 </div>
 </div>
 </div>
 </footer>
+
+<div id="policy-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+<div class="absolute inset-0 bg-black/65 backdrop-blur-md" onclick="closePolicy()"></div>
+<div class="relative w-full max-w-2xl max-h-[78vh] overflow-y-auto rounded-3xl p-8" style="background: rgba(5,20,36,0.97); backdrop-filter: blur(40px); border: 1px solid rgba(68,226,205,0.2); box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 50px rgba(68,226,205,0.08);">
+<div class="flex items-center justify-between mb-7">
+<h2 class="text-xl font-bold text-white" id="modal-title" style="font-family: Rajdhani, sans-serif; letter-spacing: 0.02em;">Policy</h2>
+<button onclick="closePolicy()" class="w-8 h-8 rounded-xl flex items-center justify-center transition-colors hover:bg-white/10"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+</div>
+<div id="modal-body" class="text-[0.83rem] leading-relaxed space-y-4" style="color: #7a9ab0; font-family: DM Sans, sans-serif;"></div>
+</div>
+</div>
+
 <script>
-    const observerOptions = { threshold: 0.05, rootMargin: '0px 0px -50px 0px' };
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.remove('opacity-0');
-                entry.target.classList.add('fade-in-up');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-    document.querySelectorAll('section, footer, .cyber-glass').forEach(el => {
-        if (!el.classList.contains('fade-in-up')) {
-            el.classList.add('opacity-0', 'transition-opacity', 'duration-700');
-            observer.observe(el);
+(function() {
+  const canvas = document.getElementById('particle-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  let raf, particles = [], t = 0;
+  const COUNT = 90, MAX_DIST = 130;
+  function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  for (let i = 0; i < COUNT; i++) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35, size: Math.random() * 1.6 + 0.4, opacity: Math.random() * 0.55 + 0.2 });
+  function draw() {
+    t += 0.008;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = 'rgba(68,226,205,0.035)'; ctx.lineWidth = 1;
+    for (let x = 0; x < canvas.width; x += 55) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
+    for (let y = 0; y < canvas.height; y += 55) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i]; p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+      for (let j = i + 1; j < particles.length; j++) {
+        const p2 = particles[j], dx = p.x - p2.x, dy = p.y - p2.y, d = Math.sqrt(dx * dx + dy * dy);
+        if (d < MAX_DIST) {
+          const a = (1 - d / MAX_DIST) * 0.38, col = i % 3 === 0 ? '100,103,242' : '68,226,205';
+          ctx.beginPath(); ctx.strokeStyle = 'rgba(' + col + ',' + a + ')'; ctx.lineWidth = 0.7;
+          ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
         }
-    });
+      }
+      const pulse = Math.sin(t * 2.5 + i * 0.6) * 0.3 + 0.7;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size * pulse, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(68,226,205,' + (p.opacity * pulse) + ')'; ctx.fill();
+    }
+    raf = requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+window.addEventListener('scroll', function() {
+  const nav = document.getElementById('navbar');
+  if (!nav) return;
+  if (window.scrollY > 40) { nav.style.background = 'rgba(5,20,36,0.82)'; nav.style.backdropFilter = 'blur(24px)'; nav.style.borderBottom = '1px solid rgba(68,226,205,0.09)'; }
+  else { nav.style.background = 'transparent'; nav.style.backdropFilter = 'none'; nav.style.borderBottom = '1px solid transparent'; }
+}, { passive: true });
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      if (el.classList.contains('opacity-0')) el.classList.remove('opacity-0');
+      el.classList.add('fade-in-up');
+      observer.unobserve(el);
+    }
+  });
+}, { threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.fade-in-up, .opacity-0').forEach(el => { if (!el.classList.contains('fade-in-up')) observer.observe(el); });
+
+document.querySelectorAll('.scanner-card').forEach(card => {
+  card.addEventListener('mousemove', function(e) {
+    const r = this.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+    this.style.transform = 'perspective(1100px) rotateX(' + ((y - 0.5) * 16) + 'deg) rotateY(' + (-(x - 0.5) * 16) + 'deg)';
+    this.style.transition = 'transform 0.08s linear';
+    const spotlight = this.querySelector('.scanner-spotlight'); if (spotlight) { spotlight.style.opacity = '1'; spotlight.style.background = 'radial-gradient(circle at ' + (x * 100) + '% ' + (y * 100) + '%, rgba(68,226,205,0.12) 0%, transparent 55%)'; }
+    const scanline = this.querySelector('.scanner-scanline'); if (scanline) scanline.style.transform = 'translateX(0%)';
+  });
+  card.addEventListener('mouseleave', function() {
+    this.style.transform = 'perspective(1100px) rotateX(0deg) rotateY(0deg)';
+    this.style.transition = 'transform 0.55s cubic-bezier(0.22,1,0.36,1)';
+    const s = this.querySelector('.scanner-spotlight'); if (s) s.style.opacity = '0';
+    const l = this.querySelector('.scanner-scanline'); if (l) l.style.transform = 'translateX(-100%)';
+  });
+});
+
+const policyTexts = {
+  privacy: { title: 'Privacy Policy', body: '<p><strong class="text-white/80">Last updated:</strong> January 2026</p><p>Aegis Security, Inc. is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and share information about you when you use our AI security and governance platform.</p><p><strong class="text-white/80">Data We Collect:</strong> Account details, API usage data, scan results metadata, and technical data (IP addresses, request metadata). We do not store the content of model inputs or outputs beyond the audit retention window you configure.</p><p><strong class="text-white/80">How We Use Data:</strong> To provide and improve the Aegis platform, detect security threats, generate compliance reports, and communicate about your account.</p><p><strong class="text-white/80">Data Sharing:</strong> We do not sell your data. We may share with service providers who assist us in operating the platform, and as required by law.</p><p><strong class="text-white/80">Security:</strong> We encrypt data in transit and at rest using industry-standard protocols. Physical access is restricted to authorized personnel.</p><p><strong class="text-white/80">Contact:</strong> privacy@aegis.security</p>' },
+  terms: { title: 'Terms of Service', body: '<p><strong class="text-white/80">Last updated:</strong> January 2026</p><p>These Terms govern your access to and use of the Aegis platform, an AI security scanning and governance service. By accessing our services, you agree to be bound by these terms.</p><p><strong class="text-white/80">Acceptable Use:</strong> You may use Aegis only for lawful purposes. You agree not to circumvent security controls, engage in unauthorized penetration testing, or process data you lack authorization to scan.</p><p><strong class="text-white/80">Intellectual Property:</strong> The Aegis platform, algorithms, and threat intelligence databases are proprietary to Aegis Security, Inc.</p><p><strong class="text-white/80">Limitation of Liability:</strong> To the maximum extent permitted by law, Aegis shall not be liable for indirect, incidental, or consequential damages.</p><p><strong class="text-white/80">Contact:</strong> legal@aegis.security</p>' },
+  cookies: { title: 'Cookie Policy', body: '<p><strong class="text-white/80">Last updated:</strong> January 2026</p><p>Aegis uses only strictly necessary cookies for platform function. No tracking, analytics, or advertising cookies are used.</p><p><strong class="text-white/80">Essential Cookies:</strong> Required for platform function — session tokens, CSRF protection, user preference storage. These cannot be disabled.</p><p><strong class="text-white/80">Managing Cookies:</strong> Configure browser settings to block cookies, but essential cookies are needed for core functionality.</p><p><strong class="text-white/80">Contact:</strong> privacy@aegis.security</p>' }
+};
+function openPolicy(key) {
+  const data = policyTexts[key]; if (!data) return;
+  document.getElementById('modal-title').textContent = data.title; document.getElementById('modal-body').innerHTML = data.body;
+  const modal = document.getElementById('policy-modal'); modal.classList.remove('hidden'); modal.classList.add('flex');
+  document.body.style.overflow = 'hidden';
+}
+function closePolicy() {
+  const modal = document.getElementById('policy-modal'); modal.classList.add('hidden'); modal.classList.remove('flex');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePolicy(); });
 </script>
 </body>
 </html>
