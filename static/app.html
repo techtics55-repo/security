@@ -746,17 +746,32 @@ async function doSignUp() {
 var googleClientId = null;
 var googleInitialized = false;
 
+function isRealClientId(id) {
+  return id && id.indexOf('your-google-client-id') === -1 && id.length > 20;
+}
+
 async function initGoogleOAuth() {
   if (googleInitialized) return;
   try {
     var r = await fetch('/auth/google/config');
     var config = await r.json();
-    if (config.configured && config.google_client_id) {
+    if (config.configured && config.google_client_id && isRealClientId(config.google_client_id)) {
       googleClientId = config.google_client_id;
       google.accounts.id.initialize({
         client_id: googleClientId,
         callback: handleGoogleCredential,
         cancel_on_tap_outside: false,
+      });
+      var container = document.getElementById('g-button-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.id = 'g-button-container';
+        container.style.display = 'none';
+        document.body.appendChild(container);
+      }
+      google.accounts.id.renderButton(container, {
+        type: 'standard', shape: 'pill', size: 'large',
+        text: 'signin_with', theme: 'outline'
       });
       googleInitialized = true;
     }
@@ -766,9 +781,14 @@ async function initGoogleOAuth() {
 }
 
 function dimGoogleButtonIfNeeded() {
+  var btn = document.getElementById('google-signin-btn');
+  if (!btn) return;
   if (!googleInitialized) {
-    var btn = document.getElementById('google-signin-btn');
-    if (btn) btn.style.opacity = '0.4';
+    btn.style.opacity = '0.4';
+    btn.title = 'Google sign-in requires a valid GOOGLE_CLIENT_ID in .env';
+  } else {
+    btn.style.opacity = '1';
+    btn.title = '';
   }
 }
 
@@ -777,18 +797,21 @@ function handleGoogleCredential(response) {
     alert('Google sign-in failed. No credential received.');
     return;
   }
-  doGoogleAuth(response.credential, 'dashboard');
+  doGoogleAuth(response.credential);
 }
 
 function handleGoogleSignIn() {
   if (!googleInitialized) {
-    alert('Google sign-in is not configured. Use email/password or contact the administrator.');
+    alert('Google sign-in is not available.\n\nTo enable:\n1. Go to https://console.cloud.google.com/\n2. Create OAuth 2.0 credentials (Web application)\n3. Add http://localhost:8000 as Authorized JavaScript origin\n4. Set GOOGLE_CLIENT_ID in .env file');
     return;
   }
+  var gBtn = document.querySelector('#g-button-container div[role=button]');
+  if (gBtn) { gBtn.click(); return; }
+  /* fallback */
   google.accounts.id.prompt();
 }
 
-async function doGoogleAuth(credential, source) {
+async function doGoogleAuth(credential) {
   try {
     var r = await fetch('/auth/google', {
       method: 'POST',
