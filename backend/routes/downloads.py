@@ -7,9 +7,9 @@ router = APIRouter(prefix="/downloads", tags=["Downloads"])
 DOWNLOADS_DIR = Path(__file__).parent.parent.parent / "downloads"
 
 FILES = {
-    "windows": ("aegis-agent-x86_64.exe", "application/vnd.microsoft.portable-executable"),
-    "macos": ("aegis-agent-x86_64.dmg", "application/x-apple-diskimage"),
-    "linux": ("aegis-agent_amd64.deb", "application/vnd.debian.binary-package"),
+    "windows": ("aegis-agent-x86_64.exe", "application/octet-stream"),
+    "macos": ("aegis-agent-x86_64.dmg", "application/octet-stream"),
+    "linux": ("aegis-agent_amd64.deb", "application/octet-stream"),
     "cli": ("aegis-cli.pyz", "application/octet-stream"),
 }
 
@@ -24,13 +24,14 @@ def download(platform: str):
     filepath = DOWNLOADS_DIR / filename
 
     if not filepath.exists():
-        if platform == "cli":
-            cli_path = DOWNLOADS_DIR / filename
-            return FileResponse(str(cli_path), media_type=media_type, filename=filename)
-
         raise HTTPException(
             status_code=404,
-            detail=f"Build not available yet. Run scripts/build_{platform}.bat|sh first.",
+            detail=f"Build not available for {platform}. Run the appropriate build script first.",
         )
 
-    return FileResponse(str(filepath), media_type=media_type, filename=filename)
+    return FileResponse(
+        str(filepath),
+        media_type=media_type,
+        filename=filename,
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
