@@ -81,9 +81,11 @@ from .routes.logs import router as logs_router
 from .routes.agents import router as agents_router
 from .routes.billing import router as billing_router
 from .routes.scanner_features import router as scanner_features_router
+from .routes.downloads import router as downloads_router
 
 app.include_router(auth_router)
 app.include_router(logs_router)
 app.include_router(agents_router)
 app.include_router(billing_router)
 app.include_router(scanner_features_router)
+app.include_router(downloads_router)

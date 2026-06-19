@@ -870,14 +870,26 @@ function downloadSoftware(platform) {
     default: return;
   }
   log(msg);
-  /* Simulate download — in production this would be a real file URL */
-  var a = document.createElement('a');
-  a.href = 'data:application/octet-stream;base64,' + btoa('# Aegis Agent Package\n# Placeholder for ' + filename + '\n# Download the real binary from the Aegis CDN.');
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  log('Downloaded: ' + filename);
+  fetch('/downloads/' + platform)
+    .then(function(r) { if (!r.ok) throw new Error('Build not available'); return r.blob(); })
+    .then(function(blob) {
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      log('Downloaded: ' + filename);
+    })
+    .catch(function(e) {
+      log('Download unavailable: ' + e.message);
+      /* Fallback: generate placeholder */
+      var a = document.createElement('a');
+      a.href = 'data:application/octet-stream;base64,' + btoa('# Aegis Agent Package (placeholder)\n# Download the real build from the downloads page.');
+      a.download = filename;
+      document.body.appendChild(a); a.click();
+      document.body.removeChild(a);
+    });
 }
 
 /* ---------- Init ---------- */
