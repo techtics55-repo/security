@@ -8,6 +8,7 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 tailwind.config = {
   darkMode: "class",
@@ -77,6 +78,10 @@ code { font-family: 'JetBrains Mono', monospace; background: rgba(255,255,255,0.
 </div>
 <div class="flex items-center gap-6">
 <span class="text-[10px] tracking-[0.3em] uppercase" style="color: #44e2cd; font-family: JetBrains Mono, monospace;">System Online</span>
+<div id="nav-user" class="hidden flex items-center gap-3">
+  <span class="text-[10px] font-mono" style="color: #7a9ab0;" id="nav-user-email"></span>
+  <button onclick="signOut()" class="px-3 py-1 rounded-xl text-[9px] font-semibold tracking-[0.06em] transition-all duration-300" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(144,144,151,0.4); color: rgba(255,255,255,0.8); font-family: JetBrains Mono, monospace;">Sign Out</button>
+</div>
 <a href="/" class="px-4 py-1.5 rounded-xl text-[10px] font-semibold tracking-[0.06em] transition-all duration-300 hover:scale-105" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(144,144,151,0.4); color: rgba(255,255,255,0.8); font-family: JetBrains Mono, monospace;">Landing</a>
 </div>
 </div>
@@ -86,16 +91,22 @@ code { font-family: 'JetBrains Mono', monospace; background: rgba(255,255,255,0.
   <aside class="w-56 shrink-0 border-r border-white/5 bg-[rgba(5,20,36,0.4)] backdrop-blur-2xl p-4 hidden md:flex flex-col gap-1 fixed left-0 top-16 bottom-0 overflow-y-auto z-40">
     <div class="text-[9px] uppercase tracking-[0.3em] mb-3 px-2" style="color: rgba(255,255,255,0.15); font-family: JetBrains Mono, monospace;">Navigation</div>
     <div class="sidebar-item active" data-page="dashboard" onclick="navigateTo('dashboard')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg> Dashboard</div>
-    <div class="sidebar-item" data-page="install" onclick="navigateTo('install')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> First Install</div>
-    <div class="sidebar-item" data-page="software" onclick="navigateTo('software')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg> Get the Software</div>
-    <div class="sidebar-item" data-page="api" onclick="navigateTo('api')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> API</div>
-    <div class="sidebar-item" data-page="billing" onclick="navigateTo('billing')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M8 8h.01"/></svg> Billings</div>
+    <div>
+      <div class="sidebar-item" data-page="install" onclick="toggleInstallSubnav()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Install <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ml-auto transition-transform" id="install-chevron"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div id="install-subnav" class="hidden ml-4 flex flex-col gap-0.5">
+        <div class="sidebar-item text-[11px] py-1.5" data-page="install" data-sub="manual" onclick="navigateTo('install','manual')">Manual</div>
+        <div class="sidebar-item text-[11px] py-1.5" data-page="install" data-sub="detail" onclick="navigateTo('install','detail')">Detail</div>
+        <div class="sidebar-item text-[11px] py-1.5" data-page="install" data-sub="guide" onclick="navigateTo('install','guide')">Guide</div>
+      </div>
+    </div>
+    <div class="sidebar-item" data-page="software" onclick="navigateTo('software')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg> Download</div>
+    <div class="sidebar-item" data-page="billing" onclick="navigateTo('billing')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M8 8h.01"/></svg> Billing</div>
     <div class="sidebar-item" data-page="docs" onclick="navigateTo('docs')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Documentation</div>
     <div class="sidebar-item" data-page="scanners" onclick="navigateTo('scanners')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Scanners</div>
     <div class="sidebar-item" data-page="settings" onclick="navigateTo('settings')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Settings</div>
     <div class="sidebar-item" data-page="help" onclick="navigateTo('help')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Help</div>
     <div class="mt-auto pt-4 border-t border-white/5">
-      <div class="sidebar-item" onclick="if(confirm('Sign out of Aegis Console?')){window.location.href='/'}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Sign Out</div>
+      <div class="sidebar-item hidden" onclick="signOut()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Sign Out</div>
     </div>
   </aside>
 
@@ -145,57 +156,134 @@ code { font-family: 'JetBrains Mono', monospace; background: rgba(255,255,255,0.
 
     <div class="page-section" id="page-install">
       <div class="flex items-center gap-3 mb-1"><span class="h-px w-6" style="background: #44e2cd;"></span><span class="text-[9px] uppercase tracking-[0.5em]" style="color: #44e2cd; font-family: JetBrains Mono, monospace;">Setup</span></div>
-      <h1 class="text-3xl text-white mb-6 font-bold tracking-tight" style="font-family: Rajdhani, sans-serif;">First Install</h1>
-      <div class="space-y-4">
-        <div class="cyber-glass p-6" style="border-radius: 0.875rem;">
-          <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-3">1. Prerequisites</h3>
-          <p class="text-sm mb-3" style="color: #7a9ab0;">Ensure you have Python 3.10+ installed on your system.</p>
-          <div class="bg-black/40 p-3 font-mono text-xs" style="color: #44e2cd; border-radius: 0.875rem;">python --version</div>
+      <h1 class="text-3xl text-white mb-6 font-bold tracking-tight" style="font-family: Rajdhani, sans-serif;">Install</h1>
+      <div class="flex gap-2 mb-6 flex-wrap">
+        <button class="install-tab btn-luxe px-5 py-2 active" data-sub="manual" onclick="switchInstallTab('manual')">Manual</button>
+        <button class="install-tab btn-secondary-luxe px-5 py-2" data-sub="detail" onclick="switchInstallTab('detail')">Detail</button>
+        <button class="install-tab btn-secondary-luxe px-5 py-2" data-sub="guide" onclick="switchInstallTab('guide')">Guide</button>
+      </div>
+      <div id="install-manual" class="install-panel">
+        <div class="space-y-4">
+          <div class="cyber-glass p-6" style="border-radius: 0.875rem;">
+            <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-3">Quick Start</h3>
+            <p class="text-sm mb-3" style="color: #7a9ab0;">Clone the repository and install dependencies.</p>
+            <div class="bg-black/40 p-3 font-mono text-xs mb-3" style="color: #44e2cd; border-radius: 0.875rem;">git clone https://github.com/techtics55-repo/security.git && cd security && pip install -r requirements.txt</div>
+            <p class="text-sm mb-3" style="color: #7a9ab0;">Start the server and agent:</p>
+            <div class="bg-black/40 p-3 font-mono text-xs" style="color: #44e2cd; border-radius: 0.875rem;">python -m uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000</div>
+          </div>
+          <div class="cyber-glass p-6" style="border-radius: 0.875rem;">
+            <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-3">Prerequisites</h3>
+            <ul class="space-y-2 text-sm" style="color: #7a9ab0;">
+              <li>Python 3.10+</li>
+              <li>Git</li>
+              <li>Node.js (optional, for frontend development)</li>
+              <li>Docker (optional, for containerized deployment)</li>
+            </ul>
+          </div>
         </div>
-        <div class="cyber-glass p-6" style="border-radius: 0.875rem;">
-          <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-3">2. Install Dependencies</h3>
-          <p class="text-sm mb-3" style="color: #7a9ab0;">Clone the repository and install required packages.</p>
-          <div class="bg-black/40 p-3 font-mono text-xs" style="color: #44e2cd; border-radius: 0.875rem;">pip install -r requirements.txt</div>
+      </div>
+      <div id="install-detail" class="install-panel hidden">
+        <div class="space-y-4">
+          <div class="cyber-glass p-6" style="border-radius: 0.875rem;">
+            <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-3">Step-by-Step Installation</h3>
+            <div class="space-y-6">
+              <div>
+                <p class="font-mono text-xs uppercase tracking-wider mb-2" style="color: #44e2cd;">Step 1: Clone Repository</p>
+                <div class="bg-black/40 p-3 font-mono text-xs" style="color: #44e2cd; border-radius: 0.875rem;">git clone https://github.com/techtics55-repo/security.git<br/>cd security</div>
+              </div>
+              <div>
+                <p class="font-mono text-xs uppercase tracking-wider mb-2" style="color: #44e2cd;">Step 2: Create Virtual Environment</p>
+                <div class="bg-black/40 p-3 font-mono text-xs" style="color: #44e2cd; border-radius: 0.875rem;">python -m venv .venv<br/>source .venv/bin/activate &amp;&amp; pip install -r requirements.txt</div>
+              </div>
+              <div>
+                <p class="font-mono text-xs uppercase tracking-wider mb-2" style="color: #44e2cd;">Step 3: Configure Environment</p>
+                <div class="bg-black/40 p-3 font-mono text-xs" style="color: #44e2cd; border-radius: 0.875rem;">cp .env.example .env<br/># Edit .env with your settings</div>
+              </div>
+              <div>
+                <p class="font-mono text-xs uppercase tracking-wider mb-2" style="color: #44e2cd;">Step 4: Initialize Database</p>
+                <div class="bg-black/40 p-3 font-mono text-xs" style="color: #44e2cd; border-radius: 0.875rem;">python -m backend.database init</div>
+              </div>
+              <div>
+                <p class="font-mono text-xs uppercase tracking-wider mb-2" style="color: #44e2cd;">Step 5: Start Server</p>
+                <div class="bg-black/40 p-3 font-mono text-xs" style="color: #44e2cd; border-radius: 0.875rem;">python -m uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="cyber-glass p-6" style="border-radius: 0.875rem;">
-          <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-3">3. Start the Agent</h3>
-          <p class="text-sm mb-3" style="color: #7a9ab0;">Launch the Aegis local monitoring agent.</p>
-          <div class="bg-black/40 p-3 font-mono text-xs" style="color: #44e2cd; border-radius: 0.875rem;">python -m agent.cli start --port 8080</div>
-        </div>
-        <div class="cyber-glass p-6" style="border-radius: 0.875rem;">
-          <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-3">4. Configure Your AI App</h3>
-          <p class="text-sm" style="color: #7a9ab0;">Set your AI provider's base URL to point at the Aegis proxy and start monitoring all traffic.</p>
+      </div>
+      <div id="install-guide" class="install-panel hidden">
+        <div class="space-y-4">
+          <div class="cyber-glass p-6" style="border-radius: 0.875rem;">
+            <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-3">Configuration Guide</h3>
+            <p class="text-sm mb-4" style="color: #7a9ab0;">After installation, configure your AI providers to route through the Aegis proxy.</p>
+            <div class="space-y-4">
+              <div class="bg-black/40 p-4" style="border-radius: 0.875rem;">
+                <p class="font-mono text-xs uppercase tracking-wider mb-2" style="color: #44e2cd;">OpenAI</p>
+                <div class="font-mono text-xs" style="color: #7a9ab0;">Set your OpenAI base URL to: <span style="color: #44e2cd;">http://localhost:8080/v1</span></div>
+              </div>
+              <div class="bg-black/40 p-4" style="border-radius: 0.875rem;">
+                <p class="font-mono text-xs uppercase tracking-wider mb-2" style="color: #44e2cd;">Anthropic</p>
+                <div class="font-mono text-xs" style="color: #7a9ab0;">Set your Anthropic base URL to: <span style="color: #44e2cd;">http://localhost:8080/v1</span></div>
+              </div>
+              <div class="bg-black/40 p-4" style="border-radius: 0.875rem;">
+                <p class="font-mono text-xs uppercase tracking-wider mb-2" style="color: #44e2cd;">Google Gemini</p>
+                <div class="font-mono text-xs" style="color: #7a9ab0;">Set your Gemini base URL to: <span style="color: #44e2cd;">http://localhost:8080/v1beta1</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="cyber-glass p-6" style="border-radius: 0.875rem;">
+            <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-3">Docker Deployment</h3>
+            <p class="text-sm mb-3" style="color: #7a9ab0;">Run the entire stack with Docker Compose:</p>
+            <div class="bg-black/40 p-3 font-mono text-xs" style="color: #44e2cd; border-radius: 0.875rem;">docker-compose up -d</div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="page-section" id="page-software">
       <div class="flex items-center gap-3 mb-1"><span class="h-px w-6" style="background: #44e2cd;"></span><span class="text-[9px] uppercase tracking-[0.5em]" style="color: #44e2cd; font-family: JetBrains Mono, monospace;">Downloads</span></div>
-      <h1 class="text-3xl text-white mb-6 font-bold tracking-tight" style="font-family: Rajdhani, sans-serif;">Get the Software</h1>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="cyber-glass p-6 text-center" style="border-radius: 0.875rem;">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2" class="mx-auto mb-3"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-          <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-2">CLI Agent</h3>
-          <p class="text-xs mb-4" style="color: #7a9ab0;">Lightweight command-line monitoring agent for local AI traffic inspection.</p>
-          <a href="/docs" class="btn-luxe px-6 py-2" style="border-radius: 0.875rem;">Download CLI</a>
+      <h1 class="text-3xl text-white mb-6 font-bold tracking-tight" style="font-family: Rajdhani, sans-serif;">Download Software</h1>
+      <div id="download-auth-gate" class="mb-6">
+        <div class="cyber-glass p-8 text-center" style="border-radius: 0.875rem;" id="download-signin-prompt">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2" class="mx-auto mb-3"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-2">Sign In Required</h3>
+          <p class="text-sm mb-4" style="color: #7a9ab0;">Please sign in to access downloads and software updates.</p>
+          <button onclick="showAuthModal()" class="btn-luxe px-6 py-2" style="border-radius: 0.875rem;">Sign In / Sign Up</button>
         </div>
-        <div class="cyber-glass p-6 text-center" style="border-radius: 0.875rem;">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6467f2" stroke-width="2" class="mx-auto mb-3"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-2">Cloud Dashboard</h3>
-          <p class="text-xs mb-4" style="color: #7a9ab0;">Full-featured SaaS dashboard with real-time monitoring, analytics, and policy management.</p>
-          <a href="/app" class="btn-luxe px-6 py-2" style="border-radius: 0.875rem;">Open Dashboard</a>
-        </div>
-        <div class="cyber-glass p-6 text-center" style="border-radius: 0.875rem;">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2" class="mx-auto mb-3"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-2">Docker Image</h3>
-          <p class="text-xs mb-4" style="color: #7a9ab0;">Containerized deployment for seamless integration into your existing infrastructure.</p>
-          <a href="/docs" class="btn-luxe px-6 py-2" style="border-radius: 0.875rem;">Pull from Registry</a>
-        </div>
-        <div class="cyber-glass p-6 text-center" style="border-radius: 0.875rem;">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6467f2" stroke-width="2" class="mx-auto mb-3"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-          <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-2">Source Code</h3>
-          <p class="text-xs mb-4" style="color: #7a9ab0;">Access the complete Aegis source on GitHub for custom builds and contributions.</p>
-          <a href="https://github.com/techtics55-repo/security.git" target="_blank" class="btn-luxe px-6 py-2" style="border-radius: 0.875rem;">View on GitHub</a>
+        <div id="download-cards" class="hidden">
+          <div class="mb-4 text-sm" style="color: #7a9ab0;" id="download-os-notice">Detecting your platform...</div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="cyber-glass p-6 text-center" style="border-radius: 0.875rem;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2" class="mx-auto mb-3"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-2">Windows</h3>
+              <p class="text-xs mb-4" style="color: #7a9ab0;">Aegis Agent for Windows x86_64</p>
+              <button onclick="downloadSoftware('windows')" class="btn-luxe px-6 py-2" style="border-radius: 0.875rem;">Download .exe</button>
+            </div>
+            <div class="cyber-glass p-6 text-center" style="border-radius: 0.875rem;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6467f2" stroke-width="2" class="mx-auto mb-3"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-2">macOS</h3>
+              <p class="text-xs mb-4" style="color: #7a9ab0;">Aegis Agent for macOS (Intel &amp; Apple Silicon)</p>
+              <button onclick="downloadSoftware('macos')" class="btn-luxe px-6 py-2" style="border-radius: 0.875rem;">Download .dmg</button>
+            </div>
+            <div class="cyber-glass p-6 text-center" style="border-radius: 0.875rem;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2" class="mx-auto mb-3"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-2">Linux</h3>
+              <p class="text-xs mb-4" style="color: #7a9ab0;">Aegis Agent for Linux (.deb / .AppImage)</p>
+              <button onclick="downloadSoftware('linux')" class="btn-luxe px-6 py-2" style="border-radius: 0.875rem;">Download .deb</button>
+            </div>
+            <div class="cyber-glass p-6 text-center" style="border-radius: 0.875rem;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6467f2" stroke-width="2" class="mx-auto mb-3"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+              <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-2">CLI Agent</h3>
+              <p class="text-xs mb-4" style="color: #7a9ab0;">Cross-platform Python CLI agent (pip install)</p>
+              <button onclick="downloadSoftware('cli')" class="btn-luxe px-6 py-2" style="border-radius: 0.875rem;">pip install</button>
+            </div>
+          </div>
+          <div class="cyber-glass p-6 mt-4 text-center" style="border-radius: 0.875rem;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2" class="mx-auto mb-2"><path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9a9 9 0 0 1-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 0 1 9-9"/></svg>
+            <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-1">Source Code</h3>
+            <p class="text-xs mb-3" style="color: #7a9ab0;">Access the complete Aegis source on GitHub.</p>
+            <a href="https://github.com/techtics55-repo/security.git" target="_blank" class="btn-luxe px-6 py-2" style="border-radius: 0.875rem;">View on GitHub</a>
+          </div>
         </div>
       </div>
     </div>
@@ -205,13 +293,13 @@ code { font-family: 'JetBrains Mono', monospace; background: rgba(255,255,255,0.
       <h1 class="text-3xl text-white mb-6 font-bold tracking-tight" style="font-family: Rajdhani, sans-serif;">API Reference</h1>
       <div class="cyber-glass p-6 mb-4" style="border-radius: 0.875rem;">
         <p class="text-sm mb-4" style="color: #7a9ab0;">Aegis exposes a RESTful API for programmatic access to all security features. All authenticated endpoints require a JWT bearer token or API key.</p>
-        <a href="/docs" class="btn-luxe px-6 py-2" style="border-radius: 0.875rem;">Open API Docs</a>
+        <p class="text-sm" style="color: #7a9ab0;">View the full interactive API documentation at the <a href="/docs" class="underline" style="color: #44e2cd;">/docs</a> endpoint (development only).</p>
       </div>
       <div class="space-y-3">
-        <div class="cyber-glass p-4 flex items-center justify-between" style="border-radius: 0.875rem;"><div><span class="text-[9px] font-bold uppercase" style="color: #44e2cd;">POST</span> <span class="font-mono text-white ml-2">/auth/register</span><div class="text-[11px]" style="color: #7a9ab0;">Create account</div></div><a href="/docs" class="btn-secondary-luxe px-3 py-1" style="border-radius: 0.875rem;">Try</a></div>
-        <div class="cyber-glass p-4 flex items-center justify-between" style="border-radius: 0.875rem;"><div><span class="text-[9px] font-bold uppercase" style="color: #44e2cd;">POST</span> <span class="font-mono text-white ml-2">/auth/login</span><div class="text-[11px]" style="color: #7a9ab0;">Authenticate</div></div><a href="/docs" class="btn-secondary-luxe px-3 py-1" style="border-radius: 0.875rem;">Try</a></div>
-        <div class="cyber-glass p-4 flex items-center justify-between" style="border-radius: 0.875rem;"><div><span class="text-[9px] font-bold uppercase" style="color: #44e2cd;">POST</span> <span class="font-mono text-white ml-2">/agents/register</span><div class="text-[11px]" style="color: #7a9ab0;">Register agent</div></div><a href="/docs" class="btn-secondary-luxe px-3 py-1" style="border-radius: 0.875rem;">Try</a></div>
-        <div class="cyber-glass p-4 flex items-center justify-between" style="border-radius: 0.875rem;"><div><span class="text-[9px] font-bold uppercase" style="color: #44e2cd;">POST</span> <span class="font-mono text-white ml-2">/logs/ingest</span><div class="text-[11px]" style="color: #7a9ab0;">Ingest scan log</div></div><a href="/docs" class="btn-secondary-luxe px-3 py-1" style="border-radius: 0.875rem;">Try</a></div>
+        <div class="cyber-glass p-4 flex items-center justify-between" style="border-radius: 0.875rem;"><div><span class="text-[9px] font-bold uppercase" style="color: #44e2cd;">POST</span> <span class="font-mono text-white ml-2">/auth/register</span><div class="text-[11px]" style="color: #7a9ab0;">Create account</div></div></div>
+        <div class="cyber-glass p-4 flex items-center justify-between" style="border-radius: 0.875rem;"><div><span class="text-[9px] font-bold uppercase" style="color: #44e2cd;">POST</span> <span class="font-mono text-white ml-2">/auth/login</span><div class="text-[11px]" style="color: #7a9ab0;">Authenticate</div></div></div>
+        <div class="cyber-glass p-4 flex items-center justify-between" style="border-radius: 0.875rem;"><div><span class="text-[9px] font-bold uppercase" style="color: #44e2cd;">POST</span> <span class="font-mono text-white ml-2">/agents/register</span><div class="text-[11px]" style="color: #7a9ab0;">Register agent</div></div></div>
+        <div class="cyber-glass p-4 flex items-center justify-between" style="border-radius: 0.875rem;"><div><span class="text-[9px] font-bold uppercase" style="color: #44e2cd;">POST</span> <span class="font-mono text-white ml-2">/logs/ingest</span><div class="text-[11px]" style="color: #7a9ab0;">Ingest scan log</div></div></div>
       </div>
     </div>
 
@@ -364,32 +452,30 @@ code { font-family: 'JetBrains Mono', monospace; background: rgba(255,255,255,0.
   </main>
 
   <aside class="w-64 shrink-0 border-l border-white/5 bg-[rgba(5,20,36,0.4)] backdrop-blur-2xl p-5 hidden md:flex flex-col gap-4 fixed right-0 top-16 bottom-0 overflow-y-auto z-40">
-    <div class="text-[9px] uppercase tracking-[0.3em] mb-1" style="color: rgba(255,255,255,0.15); font-family: JetBrains Mono, monospace;">Access</div>
-    <div class="cyber-glass p-4 text-center" style="border-radius: 0.875rem;">
+    <div class="text-[9px] uppercase tracking-[0.3em] mb-1" style="color: rgba(255,255,255,0.15); font-family: JetBrains Mono, monospace;">Downloads &amp; Access</div>
+    <div id="rsidebar-auth" class="cyber-glass p-4 text-center" style="border-radius: 0.875rem;">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2" class="mx-auto mb-2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      <h4 class="font-mono text-sm text-white uppercase tracking-wider font-bold mb-1">Get Access</h4>
-      <p class="text-[11px] mb-3" style="color: rgba(255,255,255,0.5);">Unlock full Aegis capabilities</p>
-      <button onclick="navigateTo('api')" class="btn-luxe w-full block py-2" style="border-radius: 0.875rem;">Get Access</button>
+      <h4 class="font-mono text-sm text-white uppercase tracking-wider font-bold mb-1">Sign In</h4>
+      <p class="text-[11px] mb-3" style="color: rgba(255,255,255,0.5);">Sign in to download software and access all features.</p>
+      <button onclick="showAuthModal()" class="btn-luxe w-full block py-2" style="border-radius: 0.875rem;">Sign In</button>
+    </div>
+
+    <div id="rsidebar-downloads" class="hidden">
+      <div class="text-[9px] uppercase tracking-[0.3em] mb-1" style="color: rgba(255,255,255,0.15); font-family: JetBrains Mono, monospace;">Quick Download</div>
+      <div class="cyber-glass p-4" style="border-radius: 0.875rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2" class="mx-auto mb-2"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <h4 class="font-mono text-sm text-white uppercase tracking-wider font-bold mb-2" id="rsidebar-platform">Windows</h4>
+        <button onclick="downloadSoftware('windows')" class="btn-luxe w-full block py-1.5 mb-1" style="border-radius: 0.875rem;">Download .exe</button>
+        <button onclick="downloadSoftware('cli')" class="btn-secondary-luxe w-full block py-1.5" style="border-radius: 0.875rem;">CLI Agent</button>
+      </div>
     </div>
 
     <div class="text-[9px] uppercase tracking-[0.3em] mt-2 mb-1" style="color: rgba(255,255,255,0.15); font-family: JetBrains Mono, monospace;">Plans</div>
     <div class="cyber-glass p-4" style="border-radius: 0.875rem;">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6467f2" stroke-width="2" class="mx-auto mb-2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      <h4 class="font-mono text-sm text-white uppercase tracking-wider font-bold mb-3">Premium Offers</h4>
-      <div class="space-y-2 text-[11px] mb-3" style="color: rgba(255,255,255,0.6);">
-        <div class="flex justify-between"><span>Free</span><span class="text-white font-bold">Basic</span></div>
-        <div class="flex justify-between"><span>Medium</span><span class="text-white font-bold">Advanced</span></div>
-        <div class="flex justify-between"><span>Ultimate</span><span class="text-white font-bold">Enterprise</span></div>
-      </div>
-      <button onclick="navigateTo('billing')" class="btn-secondary-luxe w-full block py-2 text-center" style="border-radius: 0.875rem;">View Plans</button>
-    </div>
-
-    <div class="text-[9px] uppercase tracking-[0.3em] mt-2 mb-1" style="color: rgba(255,255,255,0.15); font-family: JetBrains Mono, monospace;">Billing</div>
-    <div class="cyber-glass p-4" style="border-radius: 0.875rem;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2" class="mx-auto mb-2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M8 8h.01"/></svg>
-      <h4 class="font-mono text-sm text-white uppercase tracking-wider font-bold mb-1">Billings</h4>
-      <p class="text-[11px] mb-3" style="color: rgba(255,255,255,0.5);">Manage subscriptions and invoices</p>
-      <button onclick="navigateTo('billing')" class="btn-luxe w-full block py-2 text-center" style="border-radius: 0.875rem;">Billing Portal</button>
+      <h4 class="font-mono text-sm text-white uppercase tracking-wider font-bold mb-3">Current Plan</h4>
+      <p class="text-[11px] mb-3" style="color: rgba(255,255,255,0.5);" id="rsidebar-plan-display"><span class="text-white font-bold">Free</span> — Basic tier</p>
+      <button onclick="navigateTo('billing')" class="btn-secondary-luxe w-full block py-2 text-center" style="border-radius: 0.875rem;">Upgrade</button>
     </div>
 
     <div class="mt-auto pt-4 border-t border-white/5">
@@ -444,27 +530,54 @@ code { font-family: 'JetBrains Mono', monospace; background: rgba(255,255,255,0.
   draw();
 })();
 
-function navigateTo(page) {
-  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-  const item = document.querySelector(`.sidebar-item[data-page="${page}"]`);
-  if (item) item.classList.add('active');
-  document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
-  const section = document.getElementById(`page-${page}`);
+var installSubnavOpen = false;
+function toggleInstallSubnav() {
+  installSubnavOpen = !installSubnavOpen;
+  document.getElementById('install-subnav').classList.toggle('hidden');
+  document.getElementById('install-chevron').style.transform = installSubnavOpen ? 'rotate(180deg)' : '';
+}
+
+function switchInstallTab(tab) {
+  document.querySelectorAll('.install-tab').forEach(function(el) {
+    el.className = el.className.replace(' btn-luxe', ' btn-secondary-luxe').replace(' active', '');
+    if (el.dataset.sub === tab) {
+      el.className = el.className.replace('btn-secondary-luxe', 'btn-luxe') + ' active';
+    }
+  });
+  document.querySelectorAll('.install-panel').forEach(function(el) { el.classList.add('hidden'); });
+  document.getElementById('install-' + tab).classList.remove('hidden');
+}
+
+function navigateTo(page, sub) {
+  document.querySelectorAll('.sidebar-item').forEach(function(el) { el.classList.remove('active'); });
+  if (page === 'install' && sub) {
+    var items = document.querySelectorAll('.sidebar-item[data-page="install"]');
+    items.forEach(function(el) { el.classList.remove('active'); });
+    var subItem = document.querySelector('.sidebar-item[data-page="install"][data-sub="' + sub + '"]');
+    if (subItem) subItem.classList.add('active');
+    if (!installSubnavOpen) toggleInstallSubnav();
+    switchInstallTab(sub);
+  } else {
+    var item = document.querySelector('.sidebar-item[data-page="' + page + '"]');
+    if (item) item.classList.add('active');
+  }
+  document.querySelectorAll('.page-section').forEach(function(el) { el.classList.remove('active'); });
+  var section = document.getElementById('page-' + page);
   if (section) section.classList.add('active');
 }
 
 function log(msg) {
-  const el = document.getElementById('log-area');
+  var el = document.getElementById('log-area');
   if (!el) return;
-  const t = new Date().toLocaleTimeString();
-  el.innerHTML += `<div style="color: rgba(255,255,255,0.5);">[${t}] ${msg}</div>`;
+  var t = new Date().toLocaleTimeString();
+  el.innerHTML += '<div style="color: rgba(255,255,255,0.5);">[' + t + '] ' + msg + '</div>';
   el.scrollTop = el.scrollHeight;
 }
 
 async function refreshStats() {
   log('Fetching system status...');
   try {
-    const r = await fetch('/health'); const h = await r.json();
+    var r = await fetch('/health'); var h = await r.json();
     document.getElementById('stat-status').textContent = h.status === 'healthy' ? 'Healthy' : 'Degraded';
     document.getElementById('health-badge').textContent = 'Online';
     log('Health: ' + h.status);
@@ -475,7 +588,9 @@ async function refreshStats() {
   }
   document.getElementById('stat-version').textContent = 'Online';
   try {
-    const r = await fetch('/logs/stats'); if(r.ok) { const s = await r.json();
+    var r = await fetch('/logs/stats');
+    if (r.ok) {
+      var s = await r.json();
       document.getElementById('stat-scans').textContent = s.total_scans || 0;
       document.getElementById('stat-issues').textContent = s.total_issues || 0;
       log('Stats: ' + (s.total_scans||0) + ' scans, ' + (s.total_issues||0) + ' issues');
@@ -484,7 +599,278 @@ async function refreshStats() {
   log('Refresh complete.');
 }
 
-document.addEventListener('DOMContentLoaded', () => { log('Aegis Console initialized.'); refreshStats(); });
+/* ---------- Auth State ---------- */
+function getToken() { return localStorage.getItem('aegis_token'); }
+function getUser() {
+  try { return JSON.parse(localStorage.getItem('aegis_user')); } catch(e) { return null; }
+}
+function isSignedIn() { return !!getToken(); }
+
+function signOut() {
+  localStorage.removeItem('aegis_token');
+  localStorage.removeItem('aegis_user');
+  updateAuthUI();
+  navigateTo('dashboard');
+  log('Signed out.');
+}
+
+function updateAuthUI() {
+  var signedIn = isSignedIn();
+  var user = getUser();
+  /* nav bar */
+  document.getElementById('nav-user').classList.toggle('hidden', !signedIn);
+  if (signedIn && user) {
+    document.getElementById('nav-user-email').textContent = user.email || '';
+  }
+  /* right sidebar */
+  document.getElementById('rsidebar-auth').classList.toggle('hidden', signedIn);
+  document.getElementById('rsidebar-downloads').classList.toggle('hidden', !signedIn);
+  /* download page */
+  var signinPrompt = document.getElementById('download-signin-prompt');
+  var downloadCards = document.getElementById('download-cards');
+  if (signinPrompt && downloadCards) {
+    signinPrompt.classList.toggle('hidden', signedIn);
+    downloadCards.classList.toggle('hidden', !signedIn);
+  }
+  /* Sign Out bottom sidebar */
+  var signOutItems = document.querySelectorAll('.sidebar-item[onclick*="signOut"]');
+  signOutItems.forEach(function(el) {
+    el.style.display = signedIn ? 'flex' : 'none';
+  });
+}
+
+/* ---------- Auth Modal ---------- */
+var authModalHTML = '';
+function showAuthModal() {
+  var existing = document.getElementById('auth-modal');
+  if (existing) { existing.classList.remove('hidden'); existing.classList.add('flex'); return; }
+  var div = document.createElement('div');
+  div.id = 'auth-modal';
+  div.className = 'fixed inset-0 z-50 hidden items-center justify-center p-4';
+  div.innerHTML = '<div class="absolute inset-0 bg-black/65 backdrop-blur-md" onclick="closeAuthModal()"></div>' +
+    '<div class="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-3xl p-8" style="background: rgba(5,20,36,0.97); backdrop-filter: blur(40px); border: 1px solid rgba(68,226,205,0.2); box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 50px rgba(68,226,205,0.08);">' +
+    '<div class="flex items-center justify-between mb-7"><h2 class="text-xl font-bold text-white" style="font-family: Rajdhani, sans-serif;">Sign In</h2><button onclick="closeAuthModal()" class="w-8 h-8 rounded-xl flex items-center justify-center transition-colors hover:bg-white/10"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>' +
+    '<div id="auth-tabs" class="flex gap-2 mb-6"><button class="auth-tab btn-luxe px-5 py-2 flex-1 active" onclick="switchAuthTab(\'signin\')">Sign In</button><button class="auth-tab btn-secondary-luxe px-5 py-2 flex-1" onclick="switchAuthTab(\'signup\')">Sign Up</button></div>' +
+    '<div id="auth-signin">' +
+    '<div class="space-y-4">' +
+    '<div><label class="text-[10px] uppercase tracking-widest font-mono block mb-1.5" style="color: #7a9ab0;">Email</label><input id="auth-email" type="email" class="w-full px-4 py-2.5 rounded-xl text-sm font-mono" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #fff; outline: none;" placeholder="you@example.com"/></div>' +
+    '<div><label class="text-[10px] uppercase tracking-widest font-mono block mb-1.5" style="color: #7a9ab0;">Password</label><input id="auth-password" type="password" class="w-full px-4 py-2.5 rounded-xl text-sm font-mono" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #fff; outline: none;" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"/></div>' +
+    '<button onclick="doSignIn()" class="btn-luxe w-full py-3 text-xs" style="border-radius: 0.875rem;">Sign In</button>' +
+    '<div class="flex items-center gap-3 my-3"><div class="h-px flex-1" style="background: rgba(255,255,255,0.08);"></div><span class="text-[9px] uppercase tracking-widest font-mono" style="color: rgba(255,255,255,0.3);">or</span><div class="h-px flex-1" style="background: rgba(255,255,255,0.08);"></div></div>' +
+    '<button id="google-signin-btn" onclick="handleGoogleSignIn()" class="w-full py-2.5 text-xs font-mono rounded-xl flex items-center justify-center gap-2 transition-all" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.7);">' +
+    '<svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>' +
+    'Sign in with Google</button>' +
+    '<div id="auth-error" class="hidden text-[11px] font-mono text-center" style="color: #f05050;"></div>' +
+    '</div></div>' +
+    '<div id="auth-signup" class="hidden">' +
+    '<div class="space-y-4">' +
+    '<div><label class="text-[10px] uppercase tracking-widest font-mono block mb-1.5" style="color: #7a9ab0;">Full Name</label><input id="auth-name" type="text" class="w-full px-4 py-2.5 rounded-xl text-sm font-mono" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #fff; outline: none;" placeholder="Jane Doe"/></div>' +
+    '<div><label class="text-[10px] uppercase tracking-widest font-mono block mb-1.5" style="color: #7a9ab0;">Email</label><input id="auth-email2" type="email" class="w-full px-4 py-2.5 rounded-xl text-sm font-mono" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #fff; outline: none;" placeholder="you@example.com"/></div>' +
+    '<div><label class="text-[10px] uppercase tracking-widest font-mono block mb-1.5" style="color: #7a9ab0;">Password</label><input id="auth-password2" type="password" class="w-full px-4 py-2.5 rounded-xl text-sm font-mono" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #fff; outline: none;" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"/></div>' +
+    '<button onclick="doSignUp()" class="btn-luxe w-full py-3 text-xs" style="border-radius: 0.875rem;">Create Account</button>' +
+    '<div id="auth-error2" class="hidden text-[11px] font-mono text-center" style="color: #f05050;"></div>' +
+    '</div></div></div>';
+  document.body.appendChild(div);
+  dimGoogleButtonIfNeeded();
+  setTimeout(function() { div.classList.remove('hidden'); div.classList.add('flex'); }, 10);
+}
+
+function closeAuthModal() {
+  var m = document.getElementById('auth-modal');
+  if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
+}
+
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach(function(el) {
+    el.className = el.className.replace(' btn-luxe', ' btn-secondary-luxe').replace(' active', '');
+    if (el.textContent.trim().toLowerCase().replace(' ','') === tab) {
+      el.className = el.className.replace('btn-secondary-luxe', 'btn-luxe') + ' active';
+    }
+  });
+  document.getElementById('auth-signin').classList.toggle('hidden', tab !== 'signin');
+  document.getElementById('auth-signup').classList.toggle('hidden', tab !== 'signup');
+}
+
+async function doSignIn() {
+  var email = document.getElementById('auth-email').value.trim();
+  var password = document.getElementById('auth-password').value;
+  var errEl = document.getElementById('auth-error');
+  errEl.classList.add('hidden');
+  if (!email || !password) { errEl.textContent = 'Please fill in all fields.'; errEl.classList.remove('hidden'); return; }
+  try {
+    var r = await fetch('/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, password: password })
+    });
+    var data = await r.json();
+    if (!r.ok) { errEl.textContent = data.detail || 'Sign in failed.'; errEl.classList.remove('hidden'); return; }
+    localStorage.setItem('aegis_token', data.access_token);
+    localStorage.setItem('aegis_user', JSON.stringify({ email: data.email || email, user_id: data.user_id, plan: data.plan }));
+    closeAuthModal();
+    updateAuthUI();
+    log('Signed in as ' + (data.email || email));
+  } catch(e) {
+    errEl.textContent = 'Network error. Please try again.';
+    errEl.classList.remove('hidden');
+  }
+}
+
+async function doSignUp() {
+  var name = document.getElementById('auth-name').value.trim();
+  var email = document.getElementById('auth-email2').value.trim();
+  var password = document.getElementById('auth-password2').value;
+  var errEl = document.getElementById('auth-error2');
+  errEl.classList.add('hidden');
+  if (!email || !password) { errEl.textContent = 'Email and password are required.'; errEl.classList.remove('hidden'); return; }
+  try {
+    var r = await fetch('/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, password: password, full_name: name })
+    });
+    var data = await r.json();
+    if (!r.ok) { errEl.textContent = data.detail || 'Registration failed.'; errEl.classList.remove('hidden'); return; }
+    localStorage.setItem('aegis_token', data.access_token);
+    localStorage.setItem('aegis_user', JSON.stringify({ email: data.email || email, user_id: data.user_id, plan: data.plan }));
+    closeAuthModal();
+    updateAuthUI();
+    log('Account created for ' + (data.email || email));
+  } catch(e) {
+    errEl.textContent = 'Network error. Please try again.';
+    errEl.classList.remove('hidden');
+  }
+}
+
+/* ---------- Google OAuth ---------- */
+var googleClientId = null;
+var googleInitialized = false;
+
+async function initGoogleOAuth() {
+  if (googleInitialized) return;
+  try {
+    var r = await fetch('/auth/google/config');
+    var config = await r.json();
+    if (config.configured && config.google_client_id) {
+      googleClientId = config.google_client_id;
+      google.accounts.id.initialize({
+        client_id: googleClientId,
+        callback: handleGoogleCredential,
+        cancel_on_tap_outside: false,
+      });
+      googleInitialized = true;
+    }
+  } catch(e) {
+    /* Google config endpoint unreachable */
+  }
+}
+
+function dimGoogleButtonIfNeeded() {
+  if (!googleInitialized) {
+    var btn = document.getElementById('google-signin-btn');
+    if (btn) btn.style.opacity = '0.4';
+  }
+}
+
+function handleGoogleCredential(response) {
+  if (!response || !response.credential) {
+    alert('Google sign-in failed. No credential received.');
+    return;
+  }
+  doGoogleAuth(response.credential, 'dashboard');
+}
+
+function handleGoogleSignIn() {
+  if (!googleInitialized) {
+    alert('Google sign-in is not configured. Use email/password or contact the administrator.');
+    return;
+  }
+  google.accounts.id.prompt();
+}
+
+async function doGoogleAuth(credential, source) {
+  try {
+    var r = await fetch('/auth/google', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credential: credential })
+    });
+    var data = await r.json();
+    if (!r.ok) {
+      alert('Google sign-in failed: ' + (data.detail || 'Unknown error'));
+      return;
+    }
+    localStorage.setItem('aegis_token', data.access_token);
+    localStorage.setItem('aegis_user', JSON.stringify({
+      email: data.email || '',
+      user_id: data.user_id,
+      plan: data.plan
+    }));
+    closeAuthModal();
+    updateAuthUI();
+    log('Signed in with Google');
+  } catch(e) {
+    alert('Google sign-in error. Please try again.');
+  }
+}
+
+/* ---------- Platform Detection & Downloads ---------- */
+function detectOS() {
+  var ua = navigator.userAgent;
+  if (ua.indexOf('Windows') !== -1) return 'windows';
+  if (ua.indexOf('Mac OS X') !== -1 || ua.indexOf('macOS') !== -1) return 'macos';
+  if (ua.indexOf('Linux') !== -1) return 'linux';
+  return 'cli';
+}
+
+function downloadSoftware(platform) {
+  if (!isSignedIn()) { showAuthModal(); return; }
+  var msg = '';
+  var filename = '';
+  switch(platform) {
+    case 'windows':
+      filename = 'aegis-agent-x86_64.exe';
+      msg = 'Downloading Aegis Agent for Windows...';
+      break;
+    case 'macos':
+      filename = 'aegis-agent-x86_64.dmg';
+      msg = 'Downloading Aegis Agent for macOS...';
+      break;
+    case 'linux':
+      filename = 'aegis-agent_amd64.deb';
+      msg = 'Downloading Aegis Agent for Linux...';
+      break;
+    case 'cli':
+      filename = 'aegis-cli.pyz';
+      msg = 'Preparing CLI agent download...';
+      break;
+    default: return;
+  }
+  log(msg);
+  /* Simulate download — in production this would be a real file URL */
+  var a = document.createElement('a');
+  a.href = 'data:application/octet-stream;base64,' + btoa('# Aegis Agent Package\n# Placeholder for ' + filename + '\n# Download the real binary from the Aegis CDN.');
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  log('Downloaded: ' + filename);
+}
+
+/* ---------- Init ---------- */
+document.addEventListener('DOMContentLoaded', function() {
+  log('Aegis Console initialized.');
+  refreshStats();
+  updateAuthUI();
+  /* Detect OS for download sidebar */
+  var os = detectOS();
+  var osLabels = { windows: 'Windows', macos: 'macOS', linux: 'Linux', cli: 'CLI Agent' };
+  document.getElementById('rsidebar-platform').textContent = osLabels[os] || 'Windows';
+  document.getElementById('download-os-notice').textContent = 'Detected platform: ' + (osLabels[os] || 'Unknown') + '. Choose your download below.';
+  /* Initialize Google OAuth */
+  initGoogleOAuth();
+  /* Show sign-out button in sidebar if signed in */
+});
 </script>
 </body>
 </html>

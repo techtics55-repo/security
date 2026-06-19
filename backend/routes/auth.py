@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from .. import models
 from ..middleware.auth import hash_password, verify_password, create_access_token, get_current_user
+from ..config import settings
 import secrets
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
@@ -20,10 +21,20 @@ class LoginRequest(BaseModel):
     password: str
 
 
+class GoogleAuthRequest(BaseModel):
+    credential: str
+
+
+class GoogleConfigResponse(BaseModel):
+    google_client_id: str | None
+    configured: bool
+
+
 class AuthResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user_id: int
+    email: str = ""
     plan: str
     api_key: str
 
@@ -49,6 +60,7 @@ def register(req: RegisterRequest, db: Session = Depends(get_db)):
     return AuthResponse(
         access_token=token,
         user_id=user.id,
+        email=user.email,
         plan=user.plan,
         api_key=user.api_key,
     )
@@ -64,6 +76,81 @@ def login(req: LoginRequest, db: Session = Depends(get_db)):
     return AuthResponse(
         access_token=token,
         user_id=user.id,
+        email=user.email,
+        plan=user.plan,
+        api_key=user.api_key,
+    )
+
+
+@router.get("/google/config")
+def google_config():
+    return GoogleConfigResponse(
+        google_client_id=settings.google_client_id,
+        configured=bool(settings.google_client_id),
+    )
+
+
+@router.post("/google")
+def google_auth(req: GoogleAuthRequest, db: Session = Depends(get_db)):
+    if not settings.google_client_id:
+        raise HTTPException(status_code=400, detail="Google OAuth is not configured on the server")
+
+    if not req.credential:
+        raise HTTPException(status_code=400, detail="Google credential token is required")
+
+    try:
+        from google.oauth2 import id_token
+        from google.auth.transport import requests
+
+        info = id_token.verify_oauth2_token(
+            req.credential,
+            requests.Request(),
+            settings.google_client_id,
+        )
+        google_id = info.get("sub")
+        email = info.get("email", "")
+        full_name = info.get("name", "")
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=f"Invalid Google token: {str(e)}")
+
+    if not email:
+        raise HTTPException(status_code=400, detail="Google account has no email")
+
+    user = db.query(models.User).filter(
+        (models.User.email == email) | (models.User.google_id == google_id)
+    ).first()
+
+    if user:
+        if not user.google_id:
+            user.google_id = google_id
+            if full_name and not user.full_name:
+                user.full_name = full_name
+            db.commit()
+        token = create_access_token({"user_id": user.id, "email": user.email, "plan": user.plan or "free"})
+        return AuthResponse(
+            access_token=token,
+            user_id=user.id,
+            email=user.email,
+            plan=user.plan or "free",
+            api_key=user.api_key or f"aeg_{secrets.token_hex(24)}",
+        )
+
+    user = models.User(
+        email=email,
+        full_name=full_name,
+        google_id=google_id,
+        plan="free",
+        api_key=f"aeg_{secrets.token_hex(24)}",
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    token = create_access_token({"user_id": user.id, "email": user.email, "plan": user.plan})
+    return AuthResponse(
+        access_token=token,
+        user_id=user.id,
+        email=user.email,
         plan=user.plan,
         api_key=user.api_key,
     )

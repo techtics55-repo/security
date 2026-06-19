@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 1440
 
+    google_client_id: Optional[str] = None
     stripe_api_key: Optional[str] = None
     stripe_webhook_secret: Optional[str] = None
 

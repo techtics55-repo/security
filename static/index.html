@@ -8,6 +8,7 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 tailwind.config = {
   darkMode: "class",
@@ -104,6 +105,7 @@ tailwind.config = {
 <a href="#services" class="text-[0.78rem] tracking-[0.06em] transition-colors hover:text-[#44e2cd]" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">Services</a>
 <a href="/docs" class="text-[0.78rem] tracking-[0.06em] transition-colors hover:text-[#44e2cd]" style="color: #7a9ab0; font-family: JetBrains Mono, monospace;">Docs</a>
 </div>
+<button onclick="showLandingAuthModal()" class="px-5 py-2 rounded-xl text-[0.78rem] font-semibold tracking-[0.06em] transition-all duration-300 hover:scale-105" style="background: rgba(100,103,242,0.08); border: 1px solid rgba(100,103,242,0.35); color: #6467f2; font-family: JetBrains Mono, monospace;">Sign In</button>
 <a href="/app" class="px-5 py-2 rounded-xl text-[0.78rem] font-semibold tracking-[0.06em] transition-all duration-300 hover:scale-105" style="background: rgba(68,226,205,0.08); border: 1px solid rgba(68,226,205,0.35); color: #44e2cd; font-family: JetBrains Mono, monospace;">Get Access &rarr;</a>
 </div>
 </nav>
@@ -362,6 +364,179 @@ function closePolicy() {
   document.body.style.overflow = '';
 }
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePolicy(); });
+
+/* ---------- Auth Modal for Landing Page ---------- */
+function showLandingAuthModal() {
+  var existing = document.getElementById('auth-modal');
+  if (existing) { existing.classList.remove('hidden'); existing.classList.add('flex'); return; }
+  var div = document.createElement('div');
+  div.id = 'auth-modal';
+  div.className = 'fixed inset-0 z-50 hidden items-center justify-center p-4';
+  div.innerHTML = '<div class="absolute inset-0 bg-black/65 backdrop-blur-md" onclick="closeLandingAuthModal()"></div>' +
+    '<div class="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-3xl p-8" style="background: rgba(5,20,36,0.97); backdrop-filter: blur(40px); border: 1px solid rgba(68,226,205,0.2); box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 50px rgba(68,226,205,0.08);">' +
+    '<div class="flex items-center justify-between mb-7"><h2 class="text-xl font-bold text-white" style="font-family: Rajdhani, sans-serif;">Sign In</h2><button onclick="closeLandingAuthModal()" class="w-8 h-8 rounded-xl flex items-center justify-center transition-colors hover:bg-white/10"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>' +
+    '<div id="auth-tabs" class="flex gap-2 mb-6"><button class="auth-tab2 btn-luxe px-5 py-2 flex-1 active" onclick="switchLandingAuthTab(\'signin\')">Sign In</button><button class="auth-tab2 btn-secondary-luxe px-5 py-2 flex-1" onclick="switchLandingAuthTab(\'signup\')">Sign Up</button></div>' +
+    '<div id="auth-signin">' +
+    '<div class="space-y-4">' +
+    '<div><label class="text-[10px] uppercase tracking-widest font-mono block mb-1.5" style="color: #7a9ab0;">Email</label><input id="land-auth-email" type="email" class="w-full px-4 py-2.5 rounded-xl text-sm font-mono" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #fff; outline: none;" placeholder="you@example.com"/></div>' +
+    '<div><label class="text-[10px] uppercase tracking-widest font-mono block mb-1.5" style="color: #7a9ab0;">Password</label><input id="land-auth-password" type="password" class="w-full px-4 py-2.5 rounded-xl text-sm font-mono" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #fff; outline: none;" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"/></div>' +
+    '<button onclick="doLandSignIn()" class="btn-luxe w-full py-3 text-xs" style="border-radius: 0.875rem;">Sign In</button>' +
+    '<div class="flex items-center gap-3 my-3"><div class="h-px flex-1" style="background: rgba(255,255,255,0.08);"></div><span class="text-[9px] uppercase tracking-widest font-mono" style="color: rgba(255,255,255,0.3);">or</span><div class="h-px flex-1" style="background: rgba(255,255,255,0.08);"></div></div>' +
+    '<button id="land-google-btn" onclick="handleLandGoogleSignIn()" class="w-full py-2.5 text-xs font-mono rounded-xl flex items-center justify-center gap-2 transition-all" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.7);">' +
+    '<svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>' +
+    'Sign in with Google</button>' +
+    '<div id="land-auth-error" class="hidden text-[11px] font-mono text-center" style="color: #f05050;"></div>' +
+    '</div></div>' +
+    '<div id="auth-signup" class="hidden">' +
+    '<div class="space-y-4">' +
+    '<div><label class="text-[10px] uppercase tracking-widest font-mono block mb-1.5" style="color: #7a9ab0;">Full Name</label><input id="land-auth-name" type="text" class="w-full px-4 py-2.5 rounded-xl text-sm font-mono" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #fff; outline: none;" placeholder="Jane Doe"/></div>' +
+    '<div><label class="text-[10px] uppercase tracking-widest font-mono block mb-1.5" style="color: #7a9ab0;">Email</label><input id="land-auth-email2" type="email" class="w-full px-4 py-2.5 rounded-xl text-sm font-mono" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #fff; outline: none;" placeholder="you@example.com"/></div>' +
+    '<div><label class="text-[10px] uppercase tracking-widest font-mono block mb-1.5" style="color: #7a9ab0;">Password</label><input id="land-auth-password2" type="password" class="w-full px-4 py-2.5 rounded-xl text-sm font-mono" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #fff; outline: none;" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"/></div>' +
+    '<button onclick="doLandSignUp()" class="btn-luxe w-full py-3 text-xs" style="border-radius: 0.875rem;">Create Account</button>' +
+    '<div id="land-auth-error2" class="hidden text-[11px] font-mono text-center" style="color: #f05050;"></div>' +
+    '</div></div></div>';
+  document.body.appendChild(div);
+  dimLandGoogleButtonIfNeeded();
+  setTimeout(function() { div.classList.remove('hidden'); div.classList.add('flex'); }, 10);
+}
+
+function closeLandingAuthModal() {
+  var m = document.getElementById('auth-modal');
+  if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
+}
+
+function switchLandingAuthTab(tab) {
+  document.querySelectorAll('.auth-tab2').forEach(function(el) {
+    el.className = el.className.replace(' btn-luxe', ' btn-secondary-luxe').replace(' active', '');
+    if ((tab === 'signin' && el.textContent.trim().toLowerCase().replace(' ','') === 'signin') ||
+        (tab === 'signup' && el.textContent.trim().toLowerCase().replace(' ','') === 'signup')) {
+      el.className = el.className.replace('btn-secondary-luxe', 'btn-luxe') + ' active';
+    }
+  });
+  document.getElementById('auth-signin').classList.toggle('hidden', tab !== 'signin');
+  document.getElementById('auth-signup').classList.toggle('hidden', tab !== 'signup');
+}
+
+async function doLandSignIn() {
+  var email = document.getElementById('land-auth-email').value.trim();
+  var password = document.getElementById('land-auth-password').value;
+  var errEl = document.getElementById('land-auth-error');
+  errEl.classList.add('hidden');
+  if (!email || !password) { errEl.textContent = 'Please fill in all fields.'; errEl.classList.remove('hidden'); return; }
+  try {
+    var r = await fetch('/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, password: password })
+    });
+    var data = await r.json();
+    if (!r.ok) { errEl.textContent = data.detail || 'Sign in failed.'; errEl.classList.remove('hidden'); return; }
+    localStorage.setItem('aegis_token', data.access_token);
+    localStorage.setItem('aegis_user', JSON.stringify({ email: data.email || email, user_id: data.user_id, plan: data.plan }));
+    closeLandingAuthModal();
+    window.location.href = '/app';
+  } catch(e) {
+    errEl.textContent = 'Network error. Please try again.';
+    errEl.classList.remove('hidden');
+  }
+}
+
+async function doLandSignUp() {
+  var name = document.getElementById('land-auth-name').value.trim();
+  var email = document.getElementById('land-auth-email2').value.trim();
+  var password = document.getElementById('land-auth-password2').value;
+  var errEl = document.getElementById('land-auth-error2');
+  errEl.classList.add('hidden');
+  if (!email || !password) { errEl.textContent = 'Email and password are required.'; errEl.classList.remove('hidden'); return; }
+  try {
+    var r = await fetch('/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, password: password, full_name: name })
+    });
+    var data = await r.json();
+    if (!r.ok) { errEl.textContent = data.detail || 'Registration failed.'; errEl.classList.remove('hidden'); return; }
+    localStorage.setItem('aegis_token', data.access_token);
+    localStorage.setItem('aegis_user', JSON.stringify({ email: data.email || email, user_id: data.user_id, plan: data.plan }));
+    closeLandingAuthModal();
+    window.location.href = '/app';
+  } catch(e) {
+    errEl.textContent = 'Network error. Please try again.';
+    errEl.classList.remove('hidden');
+  }
+}
+
+/* ---------- Google OAuth for Landing Page ---------- */
+var landGoogleClientId = null;
+var landGoogleInitialized = false;
+
+async function initLandGoogleOAuth() {
+  if (landGoogleInitialized) return;
+  try {
+    var r = await fetch('/auth/google/config');
+    var config = await r.json();
+    if (config.configured && config.google_client_id) {
+      landGoogleClientId = config.google_client_id;
+      google.accounts.id.initialize({
+        client_id: landGoogleClientId,
+        callback: handleLandGoogleCredential,
+        cancel_on_tap_outside: false,
+      });
+      landGoogleInitialized = true;
+    }
+  } catch(e) {}
+}
+
+function dimLandGoogleButtonIfNeeded() {
+  if (!landGoogleInitialized) {
+    var btn = document.getElementById('land-google-btn');
+    if (btn) btn.style.opacity = '0.4';
+  }
+}
+
+function handleLandGoogleCredential(response) {
+  if (!response || !response.credential) {
+    alert('Google sign-in failed. No credential received.');
+    return;
+  }
+  doLandGoogleAuth(response.credential);
+}
+
+function handleLandGoogleSignIn() {
+  if (!landGoogleInitialized) {
+    alert('Google sign-in is not configured. Use email/password or contact the administrator.');
+    return;
+  }
+  google.accounts.id.prompt();
+}
+
+async function doLandGoogleAuth(credential) {
+  try {
+    var r = await fetch('/auth/google', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credential: credential })
+    });
+    var data = await r.json();
+    if (!r.ok) {
+      alert('Google sign-in failed: ' + (data.detail || 'Unknown error'));
+      return;
+    }
+    localStorage.setItem('aegis_token', data.access_token);
+    localStorage.setItem('aegis_user', JSON.stringify({
+      email: data.email || '',
+      user_id: data.user_id,
+      plan: data.plan
+    }));
+    closeLandingAuthModal();
+    window.location.href = '/app';
+  } catch(e) {
+    alert('Google sign-in error. Please try again.');
+  }
+}
+
+/* Init Google OAuth on page load */
+initLandGoogleOAuth();
 </script>
 </body>
 </html>
