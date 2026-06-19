@@ -13,45 +13,41 @@ class UpgradeRequest(BaseModel):
     plan: str
 
 
+ALL_SCANNERS = [
+    "Prompt Injection Detection",
+    "PII & Secrets Scan",
+    "Malicious Code Detection",
+    "Data Flow Mapping",
+    "Rogue Agent Detection",
+    "Policy Enforcement Engine",
+    "Hallucination Detection",
+    "Response Safety Analysis",
+    "AI Thinking Monitor",
+    "Vibe-Code Security Scanner",
+    "Oracle Node — TaaS (VPI + Ledger + Escrow)",
+]
+
 PLANS = {
     "starter": {
         "name": "Starter",
         "price": 99,
         "currency": "INR",
         "requests_per_day": 150,
-        "features": [
-            "Prompt Injection Detection (basic)",
-            "PII & Secrets Scan (basic)",
-            "Malicious Code Detection",
-            "Data Flow Mapping",
-            "Rogue Agent Detection",
-        ],
+        "features": ALL_SCANNERS,
     },
     "medium": {
         "name": "Medium",
         "price": 499,
         "currency": "INR",
         "requests_per_day": 1000,
-        "features": [
-            "Everything in Starter",
-            "Policy Enforcement Engine",
-            "Hallucination Detection",
-            "Response Safety Analysis",
-        ],
+        "features": ALL_SCANNERS,
     },
     "ultimate": {
         "name": "Ultimate",
         "price": 2199,
         "currency": "INR",
         "requests_per_day": 10000,
-        "features": [
-            "Everything in Medium",
-            "AI Thinking Monitor",
-            "Vibe-Code Security Scanner",
-            "Oracle Node — TaaS (VPI + Ledger + Escrow)",
-            "Priority Support & SLA",
-            "Custom Compliance Reports",
-        ],
+        "features": ALL_SCANNERS,
     },
 }
 
