@@ -13,41 +13,54 @@ class UpgradeRequest(BaseModel):
     plan: str
 
 
-ALL_SCANNERS = [
-    "Prompt Injection Detection",
-    "PII & Secrets Scan",
-    "Malicious Code Detection",
-    "Data Flow Mapping",
-    "Rogue Agent Detection",
-    "Policy Enforcement Engine",
-    "Hallucination Detection",
-    "Response Safety Analysis",
-    "AI Thinking Monitor",
-    "Vibe-Code Security Scanner",
-    "Oracle Node — TaaS (VPI + Ledger + Escrow)",
-]
-
 PLANS = {
     "starter": {
         "name": "Starter",
         "price": 99,
         "currency": "INR",
         "requests_per_day": 150,
-        "features": ALL_SCANNERS,
+        "features": [
+            "Prompt Injection Detection",
+            "PII & Secrets Scan",
+            "Malicious Code Detection",
+            "Data Flow Mapping",
+            "Rogue Agent Detection",
+        ],
     },
     "medium": {
         "name": "Medium",
         "price": 499,
         "currency": "INR",
         "requests_per_day": 1000,
-        "features": ALL_SCANNERS,
+        "features": [
+            "Prompt Injection Detection",
+            "PII & Secrets Scan",
+            "Malicious Code Detection",
+            "Data Flow Mapping",
+            "Rogue Agent Detection",
+            "Policy Enforcement Engine",
+            "Hallucination Detection",
+            "Response Safety Analysis",
+        ],
     },
     "ultimate": {
         "name": "Ultimate",
         "price": 2199,
         "currency": "INR",
         "requests_per_day": 10000,
-        "features": ALL_SCANNERS,
+        "features": [
+            "Prompt Injection Detection",
+            "PII & Secrets Scan",
+            "Malicious Code Detection",
+            "Data Flow Mapping",
+            "Rogue Agent Detection",
+            "Policy Enforcement Engine",
+            "Hallucination Detection",
+            "Response Safety Analysis",
+            "AI Thinking Monitor",
+            "Vibe-Code Security Scanner",
+            "Oracle Node — TaaS (VPI + Ledger + Escrow)",
+        ],
     },
 }
 
