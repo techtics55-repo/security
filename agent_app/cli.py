@@ -1,12 +1,7 @@
-#!/usr/bin/env python3
-"""
-Aegis CLI Agent — Lightweight security layer for AI interactions.
-Run: python aegis-cli.pyz [start|stop|status|enable|disable]
-"""
 import sys
 import os
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from agent_app.service import AegisService
 
@@ -14,28 +9,38 @@ from agent_app.service import AegisService
 def main():
     if len(sys.argv) < 2:
         print("Usage: aegis-cli [start|stop|status|enable|disable]")
+        print("  start   - Launch Aegis Agent in background")
+        print("  stop    - Stop the running agent")
+        print("  status  - Show agent status")
+        print("  enable  - Enable security monitoring")
+        print("  disable - Disable security monitoring")
         return
 
     svc = AegisService()
     cmd = sys.argv[1]
 
     if cmd == "start":
-        svc.start()
-        print("Aegis Agent started. Dashboard at http://127.0.0.1:8000/app")
+        port = svc.start()
+        if port:
+            print(f"Aegis Agent started. Dashboard: http://127.0.0.1:{port}/app")
+        else:
+            print("Failed to start Aegis Agent.")
     elif cmd == "stop":
         svc.stop()
         print("Aegis Agent stopped.")
     elif cmd == "status":
         s = svc.status()
-        print(f"Running: {s['running']}")
-        print(f"Enabled: {s['enabled']}")
-        print(f"Port: {s['port']}")
+        print(f"Running:  {s['running']}")
+        print(f"Enabled:  {s['enabled']}")
+        print(f"Port:     {s['port']}")
+        print(f"DB:       {s['db']}")
+        print(f"Log:      {s['log']}")
     elif cmd == "enable":
         svc.enable()
-        print("Security enabled.")
+        print("Security monitoring enabled.")
     elif cmd == "disable":
         svc.disable()
-        print("Security disabled.")
+        print("Security monitoring disabled.")
     else:
         print(f"Unknown command: {cmd}")
         print("Usage: aegis-cli [start|stop|status|enable|disable]")

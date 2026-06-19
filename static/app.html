@@ -305,28 +305,93 @@ code { font-family: 'JetBrains Mono', monospace; background: rgba(255,255,255,0.
 
     <div class="page-section" id="page-billing">
       <div class="flex items-center gap-3 mb-1"><span class="h-px w-6" style="background: #44e2cd;"></span><span class="text-[9px] uppercase tracking-[0.5em]" style="color: #44e2cd; font-family: JetBrains Mono, monospace;">Subscription</span></div>
-      <h1 class="text-3xl text-white mb-6 font-bold tracking-tight" style="font-family: Rajdhani, sans-serif;">Billings &amp; Plans</h1>
+      <h1 class="text-3xl text-white mb-6 font-bold tracking-tight" style="font-family: Rajdhani, sans-serif;">Plans &amp; Pricing</h1>
+
+      <!-- Plan Cards -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div class="cyber-glass p-6 text-center" style="border-radius: 0.875rem; border-color: rgba(68,226,205,0.2);">
-          <h3 class="font-mono text-sm uppercase tracking-widest font-bold mb-2" style="color: #44e2cd;">Free</h3>
-          <p class="text-xs mb-4" style="color: #7a9ab0;">Basic threat detection</p>
-          <a href="/docs" class="btn-secondary-luxe w-full py-2 block" style="border-radius: 0.875rem;">Get Started</a>
+
+        <!-- Starter -->
+        <div class="cyber-glass p-6 text-center relative" style="border-radius: 0.875rem; border-color: rgba(68,226,205,0.2);">
+          <h3 class="font-mono text-lg uppercase tracking-widest font-bold mb-1" style="color: #44e2cd;">Starter</h3>
+          <div class="mb-3"><span class="text-3xl font-bold text-white font-display">₹99</span><span class="text-xs" style="color: #7a9ab0;">/month</span></div>
+          <p class="text-xs mb-3" style="color: #7a9ab0;">Essential AI security for individuals</p>
+          <div class="text-left mb-4 space-y-1.5 text-xs">
+            <div class="flex items-start gap-2"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>150 requests/day</span></div>
+            <div class="flex items-start gap-2"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Prompt Injection Detection</span></div>
+            <div class="flex items-start gap-2"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>PII &amp; Secrets Scan</span></div>
+            <div class="flex items-start gap-2"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Malicious Code Detection</span></div>
+            <div class="flex items-start gap-2"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Data Flow Mapping</span></div>
+            <div class="flex items-start gap-2"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Rogue Agent Detection</span></div>
+          </div>
+          <button onclick="upgradePlan('starter')" class="btn-luxe w-full py-2 block text-center" style="border-radius: 0.875rem;">Subscribe</button>
         </div>
+
+        <!-- Medium -->
         <div class="cyber-glass p-6 text-center relative" style="border-radius: 0.875rem; border-color: rgba(68,226,205,0.4);">
           <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-widest" style="background: linear-gradient(135deg, #6467f2, #44e2cd); color: #051424; font-family: JetBrains Mono, monospace;">Popular</div>
-          <h3 class="font-mono text-sm uppercase tracking-widest font-bold mb-2" style="color: #44e2cd;">Medium</h3>
-          <p class="text-xs mb-4" style="color: #7a9ab0;">Advanced protection suite</p>
-          <a href="#" onclick="alert('Medium plan coming soon.'); return false;" class="btn-luxe w-full py-2 block" style="border-radius: 0.875rem;">Subscribe</a>
+          <h3 class="font-mono text-lg uppercase tracking-widest font-bold mb-1" style="color: #44e2cd;">Medium</h3>
+          <div class="mb-3"><span class="text-3xl font-bold text-white font-display">₹499</span><span class="text-xs" style="color: #7a9ab0;">/month</span></div>
+          <p class="text-xs mb-3" style="color: #7a9ab0;">Advanced protection for power users</p>
+          <div class="text-left mb-4 space-y-1.5 text-xs">
+            <div class="flex items-start gap-2"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>1,000 requests/day</span></div>
+            <div class="flex items-start gap-2"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#6467f2" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Everything in Starter</span></div>
+            <div class="flex items-start gap-2" style="color: rgba(255,255,255,0.5);"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#6467f2" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Policy Enforcement Engine</span></div>
+            <div class="flex items-start gap-2" style="color: rgba(255,255,255,0.5);"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#6467f2" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Hallucination Detection</span></div>
+            <div class="flex items-start gap-2" style="color: rgba(255,255,255,0.5);"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#6467f2" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Response Safety Analysis</span></div>
+          </div>
+          <button onclick="upgradePlan('medium')" class="btn-luxe w-full py-2 block text-center" style="border-radius: 0.875rem;">Subscribe</button>
         </div>
-        <div class="cyber-glass p-6 text-center" style="border-radius: 0.875rem; border-color: rgba(68,226,205,0.2);">
-          <h3 class="font-mono text-sm uppercase tracking-widest font-bold mb-2" style="color: #44e2cd;">Ultimate</h3>
-          <p class="text-xs mb-4" style="color: #7a9ab0;">Full enterprise governance</p>
-          <a href="#" onclick="alert('Ultimate plan coming soon.'); return false;" class="btn-luxe w-full py-2 block" style="border-radius: 0.875rem;">Subscribe</a>
+
+        <!-- Ultimate -->
+        <div class="cyber-glass p-6 text-center relative" style="border-radius: 0.875rem; border-color: rgba(68,226,205,0.2);">
+          <h3 class="font-mono text-lg uppercase tracking-widest font-bold mb-1" style="color: #44e2cd;">Ultimate</h3>
+          <div class="mb-3"><span class="text-3xl font-bold text-white font-display">₹2,199</span><span class="text-xs" style="color: #7a9ab0;">/month</span></div>
+          <p class="text-xs mb-3" style="color: #7a9ab0;">Full enterprise AI governance</p>
+          <div class="text-left mb-4 space-y-1.5 text-xs">
+            <div class="flex items-start gap-2"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>10,000 requests/day</span></div>
+            <div class="flex items-start gap-2"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#6467f2" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Everything in Medium</span></div>
+            <div class="flex items-start gap-2" style="color: rgba(255,255,255,0.5);"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>AI Thinking Monitor</span></div>
+            <div class="flex items-start gap-2" style="color: rgba(255,255,255,0.5);"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Vibe-Code Security Scanner</span></div>
+            <div class="flex items-start gap-2" style="color: rgba(255,255,255,0.5);"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Oracle Node — TaaS (VPI + Ledger + Escrow)</span></div>
+            <div class="flex items-start gap-2" style="color: rgba(255,255,255,0.5);"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Priority Support &amp; SLA</span></div>
+            <div class="flex items-start gap-2" style="color: rgba(255,255,255,0.5);"><svg class="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#44e2cd" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Custom Compliance Reports</span></div>
+          </div>
+          <button onclick="upgradePlan('ultimate')" class="btn-luxe w-full py-2 block text-center" style="border-radius: 0.875rem;">Subscribe</button>
         </div>
       </div>
+
+      <!-- Scanner Comparison Table -->
+      <div class="cyber-glass p-6 mb-6" style="border-radius: 0.875rem; overflow-x: auto;">
+        <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-4">Scanner Comparison</h3>
+        <table class="w-full text-xs" style="min-width: 500px;">
+          <thead>
+            <tr class="border-b border-white/10" style="color: #7a9ab0;">
+              <th class="text-left py-2 pr-4 font-mono uppercase tracking-wider">Scanner</th>
+              <th class="text-center py-2 px-2 font-mono uppercase tracking-wider" style="color: #44e2cd;">Starter</th>
+              <th class="text-center py-2 px-2 font-mono uppercase tracking-wider" style="color: #6467f2;">Medium</th>
+              <th class="text-center py-2 px-2 font-mono uppercase tracking-wider" style="color: #44e2cd;">Ultimate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-white/5"><td class="py-2 pr-4 text-white">Prompt Injection Detection</td><td class="text-center py-2" style="color: #44e2cd;">●</td><td class="text-center py-2" style="color: #44e2cd;">●</td><td class="text-center py-2" style="color: #44e2cd;">●</td></tr>
+            <tr class="border-b border-white/5"><td class="py-2 pr-4 text-white">PII &amp; Secrets Scan</td><td class="text-center py-2" style="color: #44e2cd;">●</td><td class="text-center py-2" style="color: #44e2cd;">●</td><td class="text-center py-2" style="color: #44e2cd;">●</td></tr>
+            <tr class="border-b border-white/5"><td class="py-2 pr-4 text-white">Malicious Code Detection</td><td class="text-center py-2" style="color: #44e2cd;">●</td><td class="text-center py-2" style="color: #44e2cd;">●</td><td class="text-center py-2" style="color: #44e2cd;">●</td></tr>
+            <tr class="border-b border-white/5"><td class="py-2 pr-4 text-white">Data Flow Mapping</td><td class="text-center py-2" style="color: #44e2cd;">●</td><td class="text-center py-2" style="color: #44e2cd;">●</td><td class="text-center py-2" style="color: #44e2cd;">●</td></tr>
+            <tr class="border-b border-white/5"><td class="py-2 pr-4 text-white">Rogue Agent Detection</td><td class="text-center py-2" style="color: #44e2cd;">●</td><td class="text-center py-2" style="color: #44e2cd;">●</td><td class="text-center py-2" style="color: #44e2cd;">●</td></tr>
+            <tr class="border-b border-white/5"><td class="py-2 pr-4 text-white">Policy Enforcement Engine</td><td class="text-center py-2" style="color: rgba(255,255,255,0.15);">—</td><td class="text-center py-2" style="color: #6467f2;">●</td><td class="text-center py-2" style="color: #6467f2;">●</td></tr>
+            <tr class="border-b border-white/5"><td class="py-2 pr-4 text-white">Hallucination Detection</td><td class="text-center py-2" style="color: rgba(255,255,255,0.15);">—</td><td class="text-center py-2" style="color: #6467f2;">●</td><td class="text-center py-2" style="color: #6467f2;">●</td></tr>
+            <tr class="border-b border-white/5"><td class="py-2 pr-4 text-white">Response Safety Analysis</td><td class="text-center py-2" style="color: rgba(255,255,255,0.15);">—</td><td class="text-center py-2" style="color: #6467f2;">●</td><td class="text-center py-2" style="color: #6467f2;">●</td></tr>
+            <tr class="border-b border-white/5"><td class="py-2 pr-4 text-white">AI Thinking Monitor</td><td class="text-center py-2" style="color: rgba(255,255,255,0.15);">—</td><td class="text-center py-2" style="color: rgba(255,255,255,0.15);">—</td><td class="text-center py-2" style="color: #44e2cd;">●</td></tr>
+            <tr class="border-b border-white/5"><td class="py-2 pr-4 text-white">Vibe-Code Security Scanner</td><td class="text-center py-2" style="color: rgba(255,255,255,0.15);">—</td><td class="text-center py-2" style="color: rgba(255,255,255,0.15);">—</td><td class="text-center py-2" style="color: #44e2cd;">●</td></tr>
+            <tr class="border-b border-white/5"><td class="py-2 pr-4 text-white">Oracle Node — TaaS</td><td class="text-center py-2" style="color: rgba(255,255,255,0.15);">—</td><td class="text-center py-2" style="color: rgba(255,255,255,0.15);">—</td><td class="text-center py-2" style="color: #44e2cd;">●</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Current Plan Status -->
       <div class="cyber-glass p-6" style="border-radius: 0.875rem;">
-        <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-3">Current Usage</h3>
-        <p class="text-sm" style="color: #7a9ab0;">You are currently on the <strong class="text-white">Free</strong> plan. Upgrade to unlock premium features.</p>
+        <h3 class="font-mono text-white text-sm uppercase tracking-widest font-bold mb-3">Current Plan</h3>
+        <p class="text-sm" style="color: #7a9ab0;">You are on the <strong class="text-white" id="current-plan-label">Free</strong> plan. <span id="current-plan-cta">Upgrade to unlock premium features.</span></p>
       </div>
     </div>
 
@@ -887,6 +952,32 @@ function downloadSoftware(platform) {
     });
 }
 
+function upgradePlan(plan) {
+  if (!isSignedIn()) { showAuthModal(); return; }
+  var token = getToken();
+  log('Upgrading to ' + plan + ' plan...');
+  fetch('/billing/upgrade', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+    body: JSON.stringify({ plan: plan }),
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.status === 'upgraded') {
+      log('Upgraded to ' + plan + '!');
+      document.getElementById('current-plan-label').textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+      document.getElementById('current-plan-cta').textContent = 'Enjoy your premium features.';
+      alert('Successfully upgraded to ' + plan.charAt(0).toUpperCase() + plan.slice(1) + ' plan!');
+    } else {
+      alert('Upgrade failed: ' + (data.detail || 'Unknown error'));
+    }
+  })
+  .catch(function(e) {
+    log('Upgrade error: ' + e.message);
+    alert('Upgrade failed. Please try again.');
+  });
+}
+
 /* ---------- Init ---------- */
 document.addEventListener('DOMContentLoaded', function() {
   log('Aegis Console initialized.');
@@ -900,6 +991,22 @@ document.addEventListener('DOMContentLoaded', function() {
   /* Initialize Google OAuth */
   initGoogleOAuth();
   /* Show sign-out button in sidebar if signed in */
+  /* Load current plan */
+  var token = getToken();
+  if (token) {
+    fetch('/billing/subscription', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var label = data.plan.charAt(0).toUpperCase() + data.plan.slice(1);
+      document.getElementById('current-plan-label').textContent = label;
+      if (data.plan !== 'free') {
+        document.getElementById('current-plan-cta').textContent = 'Auto-renews on ' + (data.current_period_end ? new Date(data.current_period_end).toLocaleDateString() : 'N/A');
+      }
+    })
+    .catch(function(e) { log('Failed to load subscription: ' + e.message); });
+  }
 });
 </script>
 </body>

@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from typing import Optional
 from datetime import datetime, timedelta
 from ..database import get_db
 from .. import models
@@ -14,39 +13,52 @@ class UpgradeRequest(BaseModel):
     plan: str
 
 
-class PlanInfo(BaseModel):
-    name: str
-    price: float
-    requests_per_day: int
-    features: list
-
-
 PLANS = {
-    "free": PlanInfo(
-        name="Free",
-        price=0,
-        requests_per_day=25,
-        features=["Basic injection + PII scan", "CLI only", "7-day log retention"],
-    ),
-    "medium": PlanInfo(
-        name="Medium",
-        price=12.0,
-        requests_per_day=500,
-        features=["Full scanner suite", "Web dashboard", "Email alerts", "30-day retention"],
-    ),
-    "ultimate": PlanInfo(
-        name="Ultimate",
-        price=39.0,
-        requests_per_day=10000,
-        features=["Everything in Medium", "Agent governance", "Workflow monitoring",
-                   "Custom policies", "Compliance reports", "Priority support", "1-year retention"],
-    ),
+    "starter": {
+        "name": "Starter",
+        "price": 99,
+        "currency": "INR",
+        "requests_per_day": 150,
+        "features": [
+            "Prompt Injection Detection (basic)",
+            "PII & Secrets Scan (basic)",
+            "Malicious Code Detection",
+            "Data Flow Mapping",
+            "Rogue Agent Detection",
+        ],
+    },
+    "medium": {
+        "name": "Medium",
+        "price": 499,
+        "currency": "INR",
+        "requests_per_day": 1000,
+        "features": [
+            "Everything in Starter",
+            "Policy Enforcement Engine",
+            "Hallucination Detection",
+            "Response Safety Analysis",
+        ],
+    },
+    "ultimate": {
+        "name": "Ultimate",
+        "price": 2199,
+        "currency": "INR",
+        "requests_per_day": 10000,
+        "features": [
+            "Everything in Medium",
+            "AI Thinking Monitor",
+            "Vibe-Code Security Scanner",
+            "Oracle Node — TaaS (VPI + Ledger + Escrow)",
+            "Priority Support & SLA",
+            "Custom Compliance Reports",
+        ],
+    },
 }
 
 
 @router.get("/plans")
 def list_plans():
-    return {name: plan.dict() for name, plan in PLANS.items()}
+    return PLANS
 
 
 @router.post("/upgrade")
@@ -87,8 +99,8 @@ def upgrade_plan(
     return {
         "status": "upgraded",
         "plan": req.plan,
-        "features": PLANS[req.plan].features,
-        "price_monthly": PLANS[req.plan].price,
+        "features": PLANS[req.plan]["features"],
+        "price_monthly": PLANS[req.plan]["price"],
     }
 
 

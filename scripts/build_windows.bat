@@ -1,40 +1,29 @@
 @echo off
-REM Build Aegis Agent for Windows
-REM Requires: Python 3.10+, PyInstaller
-
+REM ============================================
+REM Build Aegis Agent for Windows (Full Pipeline)
+REM ============================================
 cd /d "%~dp0.."
 
-echo Installing build dependencies...
-pip install pyinstaller
-pip install -r requirements.txt
-pip install pystray pywebview pillow
+echo === Step 1: Build agent executable with PyInstaller ===
+python -m PyInstaller aegis_agent.spec --clean --noconfirm
+if %errorlevel% neq 0 (
+    echo PyInstaller build failed!
+    exit /b %errorlevel%
+)
 
-echo Building Aegis Agent executable...
-pyinstaller ^
-    --onefile ^
-    --windowed ^
-    --name "AegisAgent" ^
-    --icon agent_app\icon.ico ^
-    --add-data "static;static" ^
-    --add-data "agent;agent" ^
-    --add-data "backend;backend" ^
-    --hidden-import backend.main ^
-    --hidden-import backend.routes.auth ^
-    --hidden-import backend.routes.logs ^
-    --hidden-import backend.routes.agents ^
-    --hidden-import backend.routes.billing ^
-    --hidden-import backend.routes.scanner_features ^
-    --hidden-import backend.database ^
-    --hidden-import backend.models ^
-    --hidden-import backend.middleware.auth ^
-    --hidden-import backend.config ^
-    --hidden-import agent.scanners ^
-    --hidden-import uvicorn ^
-    --hidden-import pystray ^
-    --hidden-import PIL ^
-    agent_app\launcher.py
+echo === Step 2: Copy to downloads ===
+copy /Y "dist\AegisAgent.exe" "downloads\aegis-agent-x86_64.exe"
 
-echo Copying build output...
-copy "dist\AegisAgent.exe" "downloads\aegis-agent-x86_64.exe"
+echo === Step 3: Build installer (requires Inno Setup) ===
+if exist "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" (
+    "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" scripts\installer_windows.iss
+    echo Installer created in downloads\
+) else (
+    echo Inno Setup not found. Skipping installer build.
+    echo Download Inno Setup from https://jrsoftware.org/isdl.php
+)
 
-echo Done! Output: downloads\aegis-agent-x86_64.exe
+echo === Done! ===
+echo Files:
+echo   downloads\aegis-agent-x86_64.exe  (portable executable)
+echo   downloads\AegisAgent-Setup-*.exe   (installer, if Inno Setup available)

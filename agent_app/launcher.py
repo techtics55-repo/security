@@ -1,6 +1,8 @@
 import sys
 import os
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+app_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.dirname(app_dir))
 
 from agent_app.__main__ import main
 
