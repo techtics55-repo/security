@@ -9,6 +9,7 @@ a = Analysis(
     binaries=[],
     datas=[
         ('static', 'static'),
+        ('downloads', 'downloads'),
     ],
     hiddenimports=[
         'backend.main',
@@ -67,7 +68,7 @@ a = Analysis(
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=['tkinter', 'test', 'unittest', 'email', 'http.client'],
+    excludes=['tkinter', 'test', 'unittest'],
     noarchive=False,
 )
 

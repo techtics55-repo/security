@@ -1,10 +1,31 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 from pathlib import Path
+import sys
 
 router = APIRouter(prefix="/downloads", tags=["Downloads"])
 
-DOWNLOADS_DIR = Path(__file__).parent.parent.parent / "downloads"
+
+def get_downloads_dir():
+    candidates = []
+    
+    if getattr(sys, "frozen", False):
+        exe_dir = Path(sys.executable).parent
+        candidates.append(exe_dir / "downloads")
+        candidates.append(exe_dir.parent / "downloads")
+        candidates.append(exe_dir.parent.parent / "downloads")
+        if hasattr(sys, "_MEIPASS"):
+            candidates.append(Path(sys._MEIPASS) / "downloads")
+    else:
+        base = Path(__file__).parent.parent.parent
+        candidates.append(base / "downloads")
+    
+    for c in candidates:
+        if c.exists():
+            return c
+    
+    return candidates[0] if candidates else Path.cwd() / "downloads"
+
 
 FILES = {
     "windows": ("aegis-agent-x86_64.exe", "application/octet-stream"),
@@ -21,7 +42,7 @@ def download(platform: str):
         raise HTTPException(status_code=404, detail=f"Unknown platform: {platform}")
 
     filename, media_type = entry
-    filepath = DOWNLOADS_DIR / filename
+    filepath = get_downloads_dir() / filename
 
     if not filepath.exists():
         raise HTTPException(
